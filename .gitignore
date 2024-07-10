@@ -1,0 +1,13 @@
+# IDE
+.idea
+
+# build
+dist
+node_modules
+pnpm-lock.yaml
+
+# eslint
+eslint-results.sarif
+
+# cert
+.cert
