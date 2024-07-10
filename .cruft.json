@@ -1,0 +1,16 @@
+{
+  "template": "https://github.com/OVINC-CN/DevTemplateVue.git",
+  "commit": "a9c02781b79116d21a3794392de181924817d05a",
+  "checkout": "a9c02781b79116d21a3794392de181924817d05a",
+  "context": {
+    "cookiecutter": {
+      "project_name": "LoginHome",
+      "_copy_without_render": [
+        ".github",
+        "src"
+      ],
+      "_template": "https://github.com/OVINC-CN/DevTemplateVue.git"
+    }
+  },
+  "directory": null
+}
