@@ -140,7 +140,7 @@ const metaConfig = computed(() => store.state.metaConfig);
 <style scoped>
 #home {
   margin-top: -90px;
-  height: 100vh;
+  height: calc(100 * var(--vh));
   width: 100%;
   justify-content: center;
   align-items: center;
