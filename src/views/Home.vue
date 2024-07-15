@@ -215,7 +215,6 @@ const metaConfig = computed(() => store.state.metaConfig);
 
 .home-org-item-content-img {
   max-width: 480px;
-  width: 100%;
   object-fit: contain;
 }
 
