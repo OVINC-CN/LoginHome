@@ -142,6 +142,7 @@ const mZhCN = {
   UserAgreement: '用户协议',
   PrivacyAgreement: '隐私协议',
   alreadyReadAgreement: '我已阅读并同意',
+  WeChatQuickLogin: '微信授权登录',
 };
 
 export default mZhCN;

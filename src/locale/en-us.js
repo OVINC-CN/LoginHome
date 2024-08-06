@@ -142,6 +142,7 @@ const mEnUS = {
   UserAgreement: 'User Agreement',
   PrivacyAgreement: 'Privacy Agreement',
   alreadyReadAgreement: 'I\'ve read and agree to ',
+  WeChatQuickLogin: 'WeChat Quick Login',
 };
 
 export default mEnUS;
