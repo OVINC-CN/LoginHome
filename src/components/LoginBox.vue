@@ -149,13 +149,13 @@
 <script setup>
 import {computed, onMounted, ref} from 'vue';
 import {useI18n} from 'vue-i18n';
-import {getUserInfoAPI, getWeChatConfigAPI, oauthCodeAPI, signInAPI, weChatLoginAPI} from '../api/user';
+import {getUserInfoAPI, getWeChatConfigAPI, oauthCodeAPI, signInAPI, weChatLoginAPI} from '@/api/user';
 import {Message, Modal} from '@arco-design/web-vue';
-import {handleLoading} from '../utils/loading';
+import {handleLoading} from '@/utils/loading';
 import {useStore} from 'vuex';
-import globalContext from '../context';
-import {hashPassword} from '../utils/encrypt';
-import {checkTCaptcha} from '../utils/tcaptcha';
+import globalContext from '@/context';
+import {hashPassword} from '@/utils/encrypt';
+import {checkTCaptcha} from '@/utils/tcaptcha';
 import {useRouter} from 'vue-router';
 
 const router = useRouter();
@@ -272,17 +272,28 @@ const initWeChatLogin = () => {
   const redirectURI = `${globalContext.siteUrl}/login/?next=${encodeURIComponent(next)}`;
   getWeChatConfigAPI().then((res) => {
     if (res.data && res.data.app_id) {
-      // eslint-disable-next-line no-undef
-      new WxLogin({
-        self_redirect: false,
-        id: 'wxlogin',
-        appid: res.data.app_id,
-        scope: 'snsapi_login',
-        redirect_uri: encodeURIComponent(redirectURI),
-        state: res.data.state,
-        style: '',
-        href: 'https://www.ovinc.cn/extra-assets/css/wechat_login.css?v=1718266759',
-      });
+      if (res.data.is_wechat) {
+        window.location.href =
+          'https://open.weixin.qq.com/connect/oauth2/authorize' +
+          `?appid=${res.data.app_id}` +
+          `&redirect_uri=${encodeURIComponent(redirectURI)}` +
+          '&response_type=code' +
+          '&scope=snsapi_userinfo' +
+          `&state=${res.data.state}` +
+          '#wechat_redirect';
+      } else {
+        // eslint-disable-next-line no-undef
+        new WxLogin({
+          self_redirect: false,
+          id: 'wxlogin',
+          appid: res.data.app_id,
+          scope: 'snsapi_login',
+          redirect_uri: encodeURIComponent(redirectURI),
+          state: res.data.state,
+          style: '',
+          href: 'https://www.ovinc.cn/extra-assets/css/wechat_login.css?v=1718266759',
+        });
+      }
     } else {
       useWeChat.value = false;
     }

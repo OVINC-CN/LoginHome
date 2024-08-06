@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-import ResetPassword from '../components/ResetPassword.vue';
+import ResetPassword from '@/components/ResetPassword.vue';
 </script>
 
 <style scoped>

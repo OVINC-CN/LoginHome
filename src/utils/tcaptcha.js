@@ -1,5 +1,5 @@
-import {getTCaptchaConfigAPI} from '../api/tcaptcha';
-import {tCaptchaLocale} from '../locale';
+import {getTCaptchaConfigAPI} from '@/api/tcaptcha';
+import {tCaptchaLocale} from '@/locale';
 
 export const checkTCaptcha = (callback) => {
   getTCaptchaConfigAPI().then(

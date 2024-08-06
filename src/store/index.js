@@ -1,6 +1,6 @@
 import {createStore} from 'vuex';
-import {getUserInfoAPI} from '../api/user';
-import {listMetaConfigAPI} from '../api/home';
+import {getUserInfoAPI} from '@/api/user';
+import {listMetaConfigAPI} from '@/api/home';
 
 const store = createStore({
   state() {

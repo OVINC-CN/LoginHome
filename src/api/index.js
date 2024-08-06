@@ -1,6 +1,6 @@
 import axios from 'axios';
-import globalContext from '../context';
-import router from '../router';
+import globalContext from '@/context';
+import router from '@/router';
 
 const http = axios;
 

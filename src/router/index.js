@@ -4,27 +4,27 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: () => import('../views/Home.vue'),
+    component: () => import('@/views/Home.vue'),
   },
   {
     path: '/login/',
     name: 'Login',
-    component: () => import('../views/Login.vue'),
+    component: () => import('@/views/Login.vue'),
   },
   {
     path: '/reset-password/',
     name: 'ResetPassword',
-    component: () => import('../views/ResetPassword.vue'),
+    component: () => import('@/views/ResetPassword.vue'),
   },
   {
     path: '/agreement/:type/',
     name: 'Agreement',
-    component: () => import('../views/Agreement.vue'),
+    component: () => import('@/views/Agreement.vue'),
   },
   {
     path: '/:pathMatch(.*)*',
     name: 'Notfound',
-    component: () => import('../views/Error404.vue'),
+    component: () => import('@/views/Error404.vue'),
   },
 ];
 

@@ -188,12 +188,12 @@
 <script setup>
 import {computed, onMounted, ref} from 'vue';
 import {useI18n} from 'vue-i18n';
-import {handleLoading} from '../utils/loading';
-import {signUpAPI, sendVerifyCodeAPI, getPhoneAreasAPI} from '../api/user';
+import {handleLoading} from '@/utils/loading';
+import {signUpAPI, sendVerifyCodeAPI, getPhoneAreasAPI} from '@/api/user';
 import {Message, Modal} from '@arco-design/web-vue';
 import {useStore} from 'vuex';
-import {hashPassword} from '../utils/encrypt';
-import {checkTCaptcha} from '../utils/tcaptcha';
+import {hashPassword} from '@/utils/encrypt';
+import {checkTCaptcha} from '@/utils/tcaptcha';
 import {useRouter} from 'vue-router';
 
 // route

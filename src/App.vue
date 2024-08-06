@@ -103,11 +103,11 @@
 <script setup>
 import {computed, onMounted, ref, watch} from 'vue';
 import {useStore} from 'vuex';
-import {locale, langOption, changeLangAndReload} from './locale';
+import {locale, langOption, changeLangAndReload} from '@/locale';
 import {useI18n} from 'vue-i18n';
 import {useRouter} from 'vue-router';
 import Aegis from 'aegis-web-sdk';
-import {getRUMConfigAPI} from './api/trace';
+import {getRUMConfigAPI} from '@/api/trace';
 
 // locale
 const i18n = useI18n();
