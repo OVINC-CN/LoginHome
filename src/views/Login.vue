@@ -39,9 +39,9 @@
 <script setup>
 import {useRoute, useRouter} from 'vue-router';
 import {computed, ref} from 'vue';
-import LoginBox from '../components/LoginBox.vue';
-import RegistryBox from '../components/RegistryBox.vue';
-import globalContext from '../context';
+import LoginBox from '@/components/LoginBox.vue';
+import RegistryBox from '@/components/RegistryBox.vue';
+import globalContext from '@/context';
 
 // route
 const route = useRoute();

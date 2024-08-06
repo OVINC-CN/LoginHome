@@ -1,4 +1,4 @@
-import http from './index';
+import http from '@/api/index';
 
 export const listAllAppAPI = (params) =>
   new Promise((resolve, reject) => {

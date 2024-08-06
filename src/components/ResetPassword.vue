@@ -149,12 +149,12 @@
 <script setup>
 import {onMounted, ref} from 'vue';
 import {useI18n} from 'vue-i18n';
-import {handleLoading} from '../utils/loading';
-import {getPhoneAreasAPI, resetPasswordAPI, sendVerifyCodeAPI} from '../api/user';
+import {handleLoading} from '@/utils/loading';
+import {getPhoneAreasAPI, resetPasswordAPI, sendVerifyCodeAPI} from '@/api/user';
 import {Message, Modal} from '@arco-design/web-vue';
-import {hashPassword} from '../utils/encrypt';
-import globalContext from '../context';
-import {checkTCaptcha} from '../utils/tcaptcha';
+import {hashPassword} from '@/utils/encrypt';
+import globalContext from '@/context';
+import {checkTCaptcha} from '@/utils/tcaptcha';
 
 // loading
 const loading = ref(false);

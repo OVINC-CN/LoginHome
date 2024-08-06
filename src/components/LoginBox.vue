@@ -103,8 +103,20 @@
     </a-space>
     <a-space
       id="wxlogin"
-      v-if="useWeChat && !useCurrent"
+      v-if="useWeChat && !useCurrent && !weChatQuickLoginUrl"
     />
+    <a-space
+      style="width: 100%; align-items: center; justify-content: center; margin: 20px 0"
+      v-if="useWeChat && !useCurrent && weChatQuickLoginUrl"
+    >
+      <a-button
+        type="primary"
+        @click="weChatQuickLogin"
+        status="success"
+      >
+        <icon-wechat style="margin-right: 8px" />{{ $t('WeChatQuickLogin') }}
+      </a-button>
+    </a-space>
     <div
       style="width: 100%; text-align: center; margin-bottom: 20px"
       v-if="useWeChat && !useCurrent"
@@ -149,13 +161,13 @@
 <script setup>
 import {computed, onMounted, ref} from 'vue';
 import {useI18n} from 'vue-i18n';
-import {getUserInfoAPI, getWeChatConfigAPI, oauthCodeAPI, signInAPI, weChatLoginAPI} from '../api/user';
+import {getUserInfoAPI, getWeChatConfigAPI, oauthCodeAPI, signInAPI, weChatLoginAPI} from '@/api/user';
 import {Message, Modal} from '@arco-design/web-vue';
-import {handleLoading} from '../utils/loading';
+import {handleLoading} from '@/utils/loading';
 import {useStore} from 'vuex';
-import globalContext from '../context';
-import {hashPassword} from '../utils/encrypt';
-import {checkTCaptcha} from '../utils/tcaptcha';
+import globalContext from '@/context';
+import {hashPassword} from '@/utils/encrypt';
+import {checkTCaptcha} from '@/utils/tcaptcha';
 import {useRouter} from 'vue-router';
 
 const router = useRouter();
@@ -265,6 +277,8 @@ const quickLogin = () => {
 // WeChat
 const wechatCode = computed(() => store.state.weChatCode);
 const useWeChat = ref(true);
+const weChatQuickLoginUrl = ref('');
+const weChatQuickLogin = () => window.location.href = weChatQuickLoginUrl.value;
 const initWeChatLogin = () => {
   useWeChat.value = true;
   const url = new URL(window.location.href);
@@ -272,17 +286,28 @@ const initWeChatLogin = () => {
   const redirectURI = `${globalContext.siteUrl}/login/?next=${encodeURIComponent(next)}`;
   getWeChatConfigAPI().then((res) => {
     if (res.data && res.data.app_id) {
-      // eslint-disable-next-line no-undef
-      new WxLogin({
-        self_redirect: false,
-        id: 'wxlogin',
-        appid: res.data.app_id,
-        scope: 'snsapi_login',
-        redirect_uri: encodeURIComponent(redirectURI),
-        state: res.data.state,
-        style: '',
-        href: 'https://www.ovinc.cn/extra-assets/css/wechat_login.css?v=1718266759',
-      });
+      if (res.data.is_wechat) {
+        weChatQuickLoginUrl.value =
+          'https://open.weixin.qq.com/connect/oauth2/authorize' +
+          `?appid=${res.data.app_id}` +
+          `&redirect_uri=${encodeURIComponent(redirectURI)}` +
+          '&response_type=code' +
+          '&scope=snsapi_userinfo' +
+          `&state=${res.data.state}` +
+          '#wechat_redirect';
+      } else {
+        // eslint-disable-next-line no-undef
+        new WxLogin({
+          self_redirect: false,
+          id: 'wxlogin',
+          appid: res.data.app_id,
+          scope: 'snsapi_login',
+          redirect_uri: encodeURIComponent(redirectURI),
+          state: res.data.state,
+          style: '',
+          href: 'https://www.ovinc.cn/extra-assets/css/wechat_login.css?v=1718266759',
+        });
+      }
     } else {
       useWeChat.value = false;
     }
@@ -317,6 +342,7 @@ const checkWeChatLogin = () => {
   border: 1px solid var(--color-border-1);
   box-sizing: border-box;
   box-shadow: var(--shadow2-center);
+  width: 360px;
   overflow: hidden;
 }
 

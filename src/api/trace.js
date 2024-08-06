@@ -1,4 +1,4 @@
-import http from './index';
+import http from '@/api/index';
 
 export const getRUMConfigAPI = () =>
   new Promise((resolve, reject) => {

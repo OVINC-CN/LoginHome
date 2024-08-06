@@ -123,8 +123,8 @@
 
 <script setup>
 import {computed, onMounted, ref} from 'vue';
-import ApplicationDisplay from '../components/ApplicationDisplay.vue';
-import {listAllAppAPI} from '../api/app';
+import ApplicationDisplay from '@/components/ApplicationDisplay.vue';
+import {listAllAppAPI} from '@/api/app';
 import {useStore} from 'vuex';
 
 const apps = ref([]);
