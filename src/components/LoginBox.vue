@@ -73,7 +73,7 @@
       >
         <a-button
           shape="circle"
-          @click="initWeChatLogin(false)"
+          @click="initWeChatLogin()"
         >
           <icon-wechat style="color: #70b838" />
         </a-button>
@@ -106,14 +106,15 @@
       v-if="useWeChat && !useCurrent && !weChatQuickLoginUrl"
     />
     <a-space
-      style="width: 100%; align-items: center; justify-content: center"
+      style="width: 100%; align-items: center; justify-content: center; margin: 20px 0"
       v-if="useWeChat && !useCurrent && weChatQuickLoginUrl"
     >
       <a-button
-        @click="weChatQuickLogin"
         type="primary"
+        @click="weChatQuickLogin"
+        status="success"
       >
-        {{ $t('WeChatQuickLogin') }}
+        <icon-wechat style="margin-right: 8px" />{{ $t('WeChatQuickLogin') }}
       </a-button>
     </a-space>
     <div
@@ -146,7 +147,7 @@
         type="text"
         @click="
           useCurrent = !useCurrent;
-          initWeChatLogin(false);
+          initWeChatLogin();
         "
         :loading="loading || weChatLoading"
         style="margin-top: 10px"
@@ -341,6 +342,7 @@ const checkWeChatLogin = () => {
   border: 1px solid var(--color-border-1);
   box-sizing: border-box;
   box-shadow: var(--shadow2-center);
+  min-width: 240px;
   overflow: hidden;
 }
 
