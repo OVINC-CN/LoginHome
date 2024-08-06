@@ -342,7 +342,7 @@ const checkWeChatLogin = () => {
   border: 1px solid var(--color-border-1);
   box-sizing: border-box;
   box-shadow: var(--shadow2-center);
-  min-width: 240px;
+  width: 360px;
   overflow: hidden;
 }
 
