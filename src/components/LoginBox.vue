@@ -73,7 +73,7 @@
       >
         <a-button
           shape="circle"
-          @click="initWeChatLogin()"
+          @click="initWeChatLogin(false)"
         >
           <icon-wechat style="color: #70b838" />
         </a-button>
@@ -135,7 +135,7 @@
         type="text"
         @click="
           useCurrent = !useCurrent;
-          initWeChatLogin();
+          initWeChatLogin(false);
         "
         :loading="loading || weChatLoading"
         style="margin-top: 10px"
@@ -225,16 +225,17 @@ const user = computed(() => store.state.user);
 const metaConfig = computed(() => store.state.metaConfig);
 const useCurrent = ref(false);
 onMounted(() => {
+  const url = new URL(window.location.href);
+  const isWeChatLoginFinished = url.searchParams.has('code') && url.searchParams.has('state');
   handleLoading(loading, true);
-  initWeChatLogin();
+  initWeChatLogin(isWeChatLoginFinished);
   getUserInfoAPI()
       .then((res) => {
         store.commit('setUser', res.data);
         store.commit('setIsLogin', true);
       })
       .finally(() => {
-        const url = new URL(window.location.href);
-        if (url.searchParams.has('code') && url.searchParams.has('state')) {
+        if (isWeChatLoginFinished) {
           checkWeChatLogin();
         } else if (user.value.username) {
           useCurrent.value = true;
@@ -265,7 +266,11 @@ const quickLogin = () => {
 // WeChat
 const wechatCode = computed(() => store.state.weChatCode);
 const useWeChat = ref(true);
-const initWeChatLogin = () => {
+const initWeChatLogin = (isWeChatLoginFinished) => {
+  if (isWeChatLoginFinished) {
+    useWeChat.value = false;
+    return;
+  }
   useWeChat.value = true;
   const url = new URL(window.location.href);
   const next = url.searchParams.get('next');
