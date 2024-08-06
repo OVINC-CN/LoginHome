@@ -103,8 +103,19 @@
     </a-space>
     <a-space
       id="wxlogin"
-      v-if="useWeChat && !useCurrent"
+      v-if="useWeChat && !useCurrent && !weChatQuickLoginUrl"
     />
+    <a-space
+      style="width: 100%; align-items: center; justify-content: center"
+      v-if="useWeChat && !useCurrent && weChatQuickLoginUrl"
+    >
+      <a-button
+        @click="weChatQuickLogin"
+        type="primary"
+      >
+        {{ $t('WeChatQuickLogin') }}
+      </a-button>
+    </a-space>
     <div
       style="width: 100%; text-align: center; margin-bottom: 20px"
       v-if="useWeChat && !useCurrent"
@@ -225,17 +236,16 @@ const user = computed(() => store.state.user);
 const metaConfig = computed(() => store.state.metaConfig);
 const useCurrent = ref(false);
 onMounted(() => {
-  const url = new URL(window.location.href);
-  const isWeChatLoginFinished = url.searchParams.has('code') && url.searchParams.has('state');
   handleLoading(loading, true);
-  initWeChatLogin(isWeChatLoginFinished);
+  initWeChatLogin();
   getUserInfoAPI()
       .then((res) => {
         store.commit('setUser', res.data);
         store.commit('setIsLogin', true);
       })
       .finally(() => {
-        if (isWeChatLoginFinished) {
+        const url = new URL(window.location.href);
+        if (url.searchParams.has('code') && url.searchParams.has('state')) {
           checkWeChatLogin();
         } else if (user.value.username) {
           useCurrent.value = true;
@@ -266,11 +276,9 @@ const quickLogin = () => {
 // WeChat
 const wechatCode = computed(() => store.state.weChatCode);
 const useWeChat = ref(true);
-const initWeChatLogin = (isWeChatLoginFinished) => {
-  if (isWeChatLoginFinished) {
-    useWeChat.value = false;
-    return;
-  }
+const weChatQuickLoginUrl = ref('');
+const weChatQuickLogin = () => window.location.href = weChatQuickLoginUrl.value;
+const initWeChatLogin = () => {
   useWeChat.value = true;
   const url = new URL(window.location.href);
   const next = url.searchParams.get('next');
@@ -278,7 +286,7 @@ const initWeChatLogin = (isWeChatLoginFinished) => {
   getWeChatConfigAPI().then((res) => {
     if (res.data && res.data.app_id) {
       if (res.data.is_wechat) {
-        window.location.href =
+        weChatQuickLoginUrl.value =
           'https://open.weixin.qq.com/connect/oauth2/authorize' +
           `?appid=${res.data.app_id}` +
           `&redirect_uri=${encodeURIComponent(redirectURI)}` +
