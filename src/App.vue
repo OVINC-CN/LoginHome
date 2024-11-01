@@ -210,7 +210,7 @@ onMounted(() => {
 }
 
 #app-menu-logo > div > img {
-  height: 36px;
+  height: 24px;
   padding-right: 4px;
   color: var(--color-text-1);
   text-align: center;
