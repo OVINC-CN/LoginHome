@@ -37,6 +37,7 @@ const store = createStore({
         miit_filling_url: '',
         gongan_filling_id: '',
         gongan_filling_url: '',
+        background_image: '',
       },
     };
   },

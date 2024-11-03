@@ -4,12 +4,16 @@ import {useStore} from 'vuex';
 
 const store = useStore();
 const metaConfig = computed(() => store.state.metaConfig);
+
+const backgroundUrl = computed(() => metaConfig.value.background_image || '/extra-assets/img/bg-1.webp');
+const backgroundImage = computed(() => `url('${backgroundUrl.value}?imageMogr2/thumbnail/1920x1080/format/webp/interlace/1')`);
 </script>
 
 <template>
   <a-space
     :fill="true"
     id="home"
+    :style="{backgroundImage}"
   >
     <a-space
       id="home-space"
@@ -86,7 +90,6 @@ const metaConfig = computed(() => store.state.metaConfig);
   width: 100%;
   justify-content: center;
   align-items: center;
-  background-image: url('/extra-assets/img/bg-1.webp?imageMogr2/thumbnail/1920x1080/format/webp/interlace/1');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
