@@ -19,7 +19,18 @@ const metaConfig = computed(() => store.state.metaConfig);
         >
           {{ metaConfig.brand_vision }}
         </div>
-        <a-empty v-else />
+        <a-skeleton
+          v-else
+          class="home-org-item-content-font"
+        >
+          <a-space
+            direction="vertical"
+            :style="{width:'100%'}"
+            size="large"
+          >
+            <a-skeleton-line :rows="6" />
+          </a-space>
+        </a-skeleton>
       </div>
     </a-layout-content>
   </a-layout>

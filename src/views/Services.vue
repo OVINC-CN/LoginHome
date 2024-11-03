@@ -50,7 +50,18 @@ const cardSpan = computed(() => {
             />
           </a-col>
         </a-row>
-        <a-empty v-else />
+        <a-skeleton
+          v-else
+          class="services-row"
+        >
+          <a-space
+            direction="vertical"
+            :style="{width:'100%'}"
+            size="large"
+          >
+            <a-skeleton-line :rows="6" />
+          </a-space>
+        </a-skeleton>
       </div>
     </a-layout-content>
   </a-layout>
