@@ -15,9 +15,6 @@ onMounted(() => window.addEventListener('resize', () => {
 }));
 onUnmounted(() => window.removeEventListener('resize', () => {}));
 const cardSpan = computed(() => {
-  if (windowWidth.value >= 1200) {
-    return 24 / 4;
-  }
   if (windowWidth.value >= 900) {
     return 24 / 3;
   }
@@ -37,9 +34,10 @@ const cardSpan = computed(() => {
       <div>
         <a-row
           v-if="apps.length > 0"
-          class="grid-demo"
+          class="services-row"
           :gutter="[20, 20]"
           wrap
+          justify="center"
         >
           <a-col
             :span="cardSpan"
@@ -62,6 +60,7 @@ const cardSpan = computed(() => {
 #services {
   display: flex;
   justify-content: center;
+  height: 100%;
 }
 
 #services .arco-layout-header {
@@ -78,6 +77,12 @@ const cardSpan = computed(() => {
   background-repeat: no-repeat;
 }
 
+@media (min-height: 800px) {
+  #services .arco-layout-header {
+    height: 320px;
+  }
+}
+
 #services .arco-layout-content {
   padding: 20px;
   box-sizing: border-box;
@@ -88,5 +93,12 @@ const cardSpan = computed(() => {
 .arco-layout-content > div {
   max-width: 1600px;
   width: 100%;
+}
+
+.services-row  {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  align-content: center;
 }
 </style>

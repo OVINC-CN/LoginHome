@@ -29,6 +29,7 @@ const metaConfig = computed(() => store.state.metaConfig);
 #spirit {
   display: flex;
   justify-content: center;
+  height: 100%;
 }
 
 #spirit .arco-layout-header {
@@ -45,11 +46,18 @@ const metaConfig = computed(() => store.state.metaConfig);
   background-repeat: no-repeat;
 }
 
+@media (min-height: 800px) {
+  #spirit .arco-layout-header {
+    height: 320px;
+  }
+}
+
 #spirit .arco-layout-content {
   padding: 20px;
   box-sizing: border-box;
   display: flex;
   justify-content: center;
+  height: 100%;
 }
 
 .arco-layout-content > div {
@@ -61,5 +69,9 @@ const metaConfig = computed(() => store.state.metaConfig);
   font-size: 16px;
   color: var(--color-neutral-10);
   line-height: 36px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
