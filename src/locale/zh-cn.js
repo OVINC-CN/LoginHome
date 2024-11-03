@@ -102,7 +102,7 @@ const mZhCN = {
   Allow: '通过',
   Deny: '驳回',
   ResourceID: '资源ID',
-  Services: '应用与服务',
+  Services: '服务',
   OrgSpiritTitle: '愿景及使命',
   ContactWays: '联系方式',
   PhoneNumber: '联系电话',
@@ -143,6 +143,11 @@ const mZhCN = {
   PrivacyAgreement: '隐私协议',
   alreadyReadAgreement: '我已阅读并同意',
   WeChatQuickLogin: '微信授权登录',
+  ApplicationAndServices: '应用与服务',
+  Spirit: '愿景',
+  SpiritAndVision: '使命与愿景',
+  ContactUs: '保持联系',
+  Contact: '联系',
 };
 
 export default mZhCN;

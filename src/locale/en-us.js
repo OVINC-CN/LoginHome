@@ -102,7 +102,7 @@ const mEnUS = {
   Allow: 'Allow',
   Deny: 'Deny',
   ResourceID: 'Resource ID',
-  Services: 'Application & Services',
+  Services: 'Services',
   OrgSpiritTitle: 'Vision & Mission',
   ContactWays: 'Contact Information',
   PhoneNumber: 'Phone Number',
@@ -143,6 +143,11 @@ const mEnUS = {
   PrivacyAgreement: 'Privacy Agreement',
   alreadyReadAgreement: 'I\'ve read and agree to ',
   WeChatQuickLogin: 'WeChat Quick Login',
+  ApplicationAndServices: 'Application and Services',
+  Spirit: 'Spirit',
+  SpiritAndVision: 'Spirit And Vision',
+  ContactUs: 'Keep Contact',
+  Contact: 'Contact',
 };
 
 export default mEnUS;
