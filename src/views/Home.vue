@@ -1,3 +1,11 @@
+<script setup>
+import {computed} from 'vue';
+import {useStore} from 'vuex';
+
+const store = useStore();
+const metaConfig = computed(() => store.state.metaConfig);
+</script>
+
 <template>
   <a-space
     :fill="true"
@@ -19,127 +27,61 @@
       </div>
     </a-space>
   </a-space>
-  <a-space
+  <div
     id="home-org"
-    direction="vertical"
+    v-if="metaConfig.contact_picture_url || metaConfig.contact_email || metaConfig.contact_phone"
   >
-    <a-space
-      id="home-org-content"
-      direction="vertical"
-    >
-      <a-space
-        class="home-org-item"
-        direction="vertical"
-        v-if="metaConfig.brand_vision"
+    <div>
+      <a-divider
+        orientation="left"
+        class="home-org-item-divider"
       >
-        <a-divider
-          orientation="left"
-          class="home-org-item-divider"
-        >
-          <div class="home-org-second-title">
-            {{ $t('OrgSpiritTitle') }}
-          </div>
-        </a-divider>
-        <div class="home-org-item-content-font">
-          {{ metaConfig.brand_vision }}
+        <div class="home-org-second-title">
+          {{ $t('ContactWays') }}
         </div>
-      </a-space>
-      <a-space
-        class="home-org-item"
-        direction="vertical"
-        v-if="apps.length > 0"
-      >
-        <a-divider
-          orientation="left"
-          class="home-org-item-divider"
+      </a-divider>
+      <div class="home-org-item-contact-us">
+        <img
+          v-if="metaConfig.contact_picture_url"
+          alt="wechat_mp"
+          :src="metaConfig.contact_picture_url"
+          class="home-org-item-content-img"
+          width="480px"
         >
-          <div class="home-org-second-title">
-            {{ $t('Services') }}
-          </div>
-        </a-divider>
-        <a-space
-          :size="[40, 40]"
-          direction="vertical"
-          style="align-items: flex-start"
+        <div
+          style="display: flex; align-items: center; justify-content: space-between; width: 400px"
+          v-if="metaConfig.contact_email || metaConfig.contact_phone"
         >
-          <application-display
-            :app="app"
-            v-for="app in apps"
-            :key="app.app_code"
-            class="home-org-item-content-font"
-          />
-        </a-space>
-      </a-space>
-      <a-space
-        class="home-org-item"
-        direction="vertical"
-        v-if="metaConfig.contact_picture_url || metaConfig.contact_email || metaConfig.contact_phone"
-      >
-        <a-divider
-          orientation="left"
-          class="home-org-item-divider"
-        >
-          <div class="home-org-second-title">
-            {{ $t('ContactWays') }}
-          </div>
-        </a-divider>
-        <div class="home-org-item-contact-us">
           <img
-            v-if="metaConfig.contact_picture_url"
-            alt="wechat_mp"
-            :src="metaConfig.contact_picture_url"
+            alt="mail"
+            src="/public/extra-assets/img/undraw_mailbox_re_dvds.svg"
             class="home-org-item-content-img"
+            height="120px"
+            style="max-height: 120px;"
           >
-          <div
-            style="display: flex; align-items: center; justify-content: center"
-            v-if="metaConfig.contact_email || metaConfig.contact_phone"
-          >
-            <img
-              alt="mail"
-              src="/public/extra-assets/img/undraw_mailbox_re_dvds.svg"
-              class="home-org-item-content-img"
-              style="max-height: 120px; margin-right: 40px"
+          <div style="font-size: 16px; line-height: 18px">
+            {{ $t('Email') }}:
+            <br>
+            <a-link
+              :href="`mailto:${metaConfig.contact_email}`"
+              style="padding: 0; font-size: 16px; color: unset"
             >
-            <div style="font-size: 16px; line-height: 18px">
-              {{ $t('Email') }}:
+              {{ metaConfig.contact_email }}
+            </a-link>
+            <template v-if="metaConfig.contact_phone">
               <br>
-              <a-link
-                :href="`mailto:${metaConfig.contact_email}`"
-                style="padding: 0; font-size: 16px; color: unset"
-              >
-                {{ metaConfig.contact_email }}
-              </a-link>
-              <template v-if="metaConfig.contact_phone">
-                <br>
-                {{ $t('PhoneNumber') }}: {{ metaConfig.contact_phone }}
-              </template>
-            </div>
+              {{ $t('PhoneNumber') }}: {{ metaConfig.contact_phone }}
+            </template>
           </div>
         </div>
-      </a-space>
-    </a-space>
-  </a-space>
+      </div>
+    </div>
+  </div>
 </template>
-
-<script setup>
-import {computed, onMounted, ref} from 'vue';
-import ApplicationDisplay from '@/components/ApplicationDisplay.vue';
-import {listAllAppAPI} from '@/api/app';
-import {useStore} from 'vuex';
-
-const apps = ref([]);
-const loadApps = () => {
-  listAllAppAPI().then((res) => apps.value = res.data);
-};
-onMounted(() => loadApps());
-
-const store = useStore();
-const metaConfig = computed(() => store.state.metaConfig);
-</script>
 
 <style scoped>
 #home {
-  margin-top: -90px;
+  margin-top: -60px;
   height: calc(100 * var(--vh));
   width: 100%;
   justify-content: center;
@@ -158,11 +100,6 @@ const metaConfig = computed(() => store.state.metaConfig);
   background: rgba(255, 255, 255, 0.4);
 }
 
-#home-org-content {
-  max-width: 1440px;
-  width: 100%;
-}
-
 #home-space-title {
   font-size: 24px;
   margin-top: 0;
@@ -175,26 +112,16 @@ const metaConfig = computed(() => store.state.metaConfig);
 }
 
 #home-org {
-  padding: 60px;
+  padding: 20px;
   width: 100%;
   box-sizing: border-box;
-}
-
-#home-org > :deep(.arco-space-item) {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  width: 100%;
 }
 
-.home-org-item {
-  align-items: center;
+#home-org > div {
   width: 100%;
-}
-
-.home-org-item > :deep(.arco-space-item) {
-  width: 100%;
+  max-width: 1600px;
 }
 
 .home-org-second-title {
@@ -203,33 +130,9 @@ const metaConfig = computed(() => store.state.metaConfig);
   font-weight: bold;
 }
 
-.home-org-item-divider {
-  margin: 100px 0 60px 0 !important;
-}
-
-.home-org-item-content-font {
-  font-size: 16px;
-  color: var(--color-neutral-10);
-  line-height: 32px;
-}
-
-.home-org-item-content-img {
-  max-width: 480px;
-  object-fit: contain;
-}
-
 .home-org-item-contact-us {
   display: flex;
   justify-content: space-around;
-}
-
-@media screen and (max-width: 600px) {
-  #home-space {
-    padding: 60px 40px;
-  }
-  #home-org {
-    padding: 20px;
-  }
 }
 
 @media screen and (max-width: 1000px) {
@@ -238,10 +141,25 @@ const metaConfig = computed(() => store.state.metaConfig);
     align-items: center;
   }
   .home-org-item-contact-us > img {
-    margin-bottom: 40px;
+    margin-bottom: 20px;
   }
-  .home-org-item-divider {
-    margin: 60px 0 60px 0 !important;
+  .home-org-item-contact-us > div {
+    margin-right: unset;
+  }
+  #home-space {
+    padding: 20px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .home-org-item-contact-us > img {
+    width: 80% !important;
+  }
+  .home-org-item-contact-us > div {
+    width: 70% !important;
+  }
+  .home-org-item-contact-us > div > img {
+    width: 50% !important;
   }
 }
 </style>

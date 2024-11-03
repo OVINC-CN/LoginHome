@@ -4,6 +4,7 @@
       :size="32"
       :loading="mainLoading"
       :tip="$t('loading')"
+      style="width: 100%;"
     >
       <a-layout id="app-layout">
         <a-layout-header id="app-header">
@@ -135,6 +136,16 @@ const menu = ref([
     name: i18n.t('Home'),
     path_match: '/',
   },
+  {
+    key: 'Spirit',
+    name: i18n.t('Spirit'),
+    path_match: '/spirit',
+  },
+  {
+    key: 'Services',
+    name: i18n.t('Services'),
+    path_match: '/services',
+  },
 ]);
 const router = useRouter();
 const currentMenuItem = ref(menu.value[0].key);
@@ -172,17 +183,20 @@ onMounted(() => {
 
 #app-layout {
   height: calc(100 * var(--vh));
-  width: 100vw;
+  width: 100%;
 }
 
 #app-header {
-  margin-bottom: 20px;
   border-bottom: 1px solid var(--color-border-1);
+  display: flex;
+  justify-content: center;
 }
 
 #app-header > div {
   display: flex;
   justify-content: space-around;
+  max-width: 1600px;
+  width: 100%;
 }
 
 #app-header-right {
@@ -196,7 +210,7 @@ onMounted(() => {
   padding-left: 0;
   padding-right: 0;
   margin-left: 0;
-  background-color: unset;
+  background: unset!important;
 }
 
 #app-header-menu-lang {
@@ -226,11 +240,14 @@ onMounted(() => {
   align-items: center;
   border-top: 1px solid var(--color-border-1);
   color: var(--color-text-1);
-  margin-top: 20px;
   flex-direction: column;
   padding: 10px;
   line-height: 24px;
   word-break: keep-all;
+}
+
+.arco-menu-item {
+  background: unset!important;
 }
 
 #miit-filling,
@@ -249,7 +266,13 @@ onMounted(() => {
   }
 }
 
-#app-header .arco-menu-item {
-  background-color: unset;
+.arco-menu-light,
+#app-header-right,
+.arco-menu-pop-header {
+  background: unset!important;
+}
+
+.arco-menu-selected-label {
+  display: none;
 }
 </style>
