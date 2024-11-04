@@ -5,7 +5,7 @@ import {useStore} from 'vuex';
 const store = useStore();
 const metaConfig = computed(() => store.state.metaConfig);
 
-const backgroundUrl = computed(() => metaConfig.value.background_image || '/extra-assets/img/bg-1.webp');
+const backgroundUrl = computed(() => metaConfig.value.background_image);
 const backgroundImage = computed(() => `url('${backgroundUrl.value}?imageMogr2/thumbnail/1920x1080/format/webp/interlace/1')`);
 </script>
 
