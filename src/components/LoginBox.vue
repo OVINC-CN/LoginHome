@@ -102,7 +102,8 @@
       </div>
     </a-space>
     <a-spin
-      :loading="useWeChat && !useCurrent && !weChatQuickLoginUrl && loading"
+      v-if="useWeChat && !useCurrent && !weChatQuickLoginUrl"
+      :loading="loading"
       style="width: 100%;"
     >
       <a-space
