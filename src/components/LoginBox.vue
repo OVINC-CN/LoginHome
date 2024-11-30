@@ -101,10 +101,15 @@
         </a>
       </div>
     </a-space>
-    <a-space
-      id="wxlogin"
-      v-if="useWeChat && !useCurrent && !weChatQuickLoginUrl"
-    />
+    <a-spin
+      :loading="useWeChat && !useCurrent && !weChatQuickLoginUrl && loading"
+      style="width: 100%;"
+    >
+      <a-space
+        id="wxlogin"
+        v-if="useWeChat && !useCurrent && !weChatQuickLoginUrl"
+      />
+    </a-spin>
     <a-space
       style="width: 100%; align-items: center; justify-content: center; margin: 20px 0"
       v-if="useWeChat && !useCurrent && weChatQuickLoginUrl"
@@ -172,12 +177,6 @@ import {useRouter} from 'vue-router';
 
 const router = useRouter();
 
-onMounted(() => {
-  const script = document.createElement('script');
-  script.src = 'https://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js';
-  document.head.appendChild(script);
-});
-
 // loading
 const loading = ref(false);
 const weChatLoading = ref(false);
@@ -218,16 +217,17 @@ const handleSubmit = async ({values, errors}) => {
               Message.info(i18n.t('LoginSuccess'));
               emits('loginRedirect', res.data.code);
             },
-            (err) =>
+            (err) => {
               Modal.warning({
                 title: i18n.t('LoginFailed'),
                 content: err.response.data.message,
                 modalStyle: {textAlign: 'center'},
                 width: 340,
                 okText: i18n.t('OK'),
-              }),
-        )
-        .finally(() => handleLoading(loading, false));
+              });
+              handleLoading(loading, false);
+            },
+        );
   });
 };
 
@@ -248,10 +248,12 @@ onMounted(() => {
         const url = new URL(window.location.href);
         if (url.searchParams.has('code') && url.searchParams.has('state')) {
           checkWeChatLogin();
-        } else if (user.value.username) {
-          useCurrent.value = true;
+        } else {
+          if (user.value.username) {
+            useCurrent.value = true;
+          }
+          handleLoading(loading, false);
         }
-        handleLoading(loading, false);
       });
 });
 const quickLogin = () => {
@@ -262,16 +264,17 @@ const quickLogin = () => {
             Message.info(i18n.t('LoginSuccess'));
             emits('loginRedirect', res.data.code);
           },
-          (err) =>
+          (err) => {
             Modal.warning({
               title: i18n.t('LoginFailed'),
               content: err.response.data.message,
               modalStyle: {textAlign: 'center'},
               width: 340,
               okText: i18n.t('OK'),
-            }),
-      )
-      .finally(() => handleLoading(loading, false));
+            });
+            handleLoading(loading, false);
+          },
+      );
 };
 
 // WeChat
@@ -327,10 +330,12 @@ const checkWeChatLogin = () => {
         } else if ('wechat_code' in res.data) {
           store.commit('setWeChatCode', res.data.wechat_code);
           useWeChat.value = false;
+          handleLoading(loading, false);
         }
       },
       (err) => {
         Message.error(err.response.data.message);
+        handleLoading(loading, false);
       },
   );
 };
