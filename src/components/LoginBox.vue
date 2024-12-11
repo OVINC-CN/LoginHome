@@ -5,7 +5,7 @@
   >
     <div id="login-box-title-box">
       <h2 id="login-box-title">
-        {{ (metaConfig.brand_name ? `${metaConfig.brand_name} `: '') + $t('LoginToOVINC') }}
+        <span v-html="(metaConfig.brand_name ? `${metaConfig.brand_name} `: '') + $t('LoginToOVINC')" />
       </h2>
     </div>
     <a-form

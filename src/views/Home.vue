@@ -21,13 +21,13 @@ const backgroundImage = computed(() => `url('${backgroundUrl.value}?imageMogr2/t
       v-if="metaConfig.brand_title"
     >
       <h2 id="home-space-title">
-        {{ metaConfig.brand_title }}
+        <span v-html="metaConfig.brand_title" />
       </h2>
       <div
         id="home-space-desc"
         v-if="metaConfig.brand_desc"
       >
-        {{ metaConfig.brand_desc }}
+        <span v-html="metaConfig.brand_desc" />
       </div>
     </a-space>
   </a-space>
