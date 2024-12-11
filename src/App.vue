@@ -63,7 +63,7 @@
           </div>
           <div>
             Copyright&nbsp;&copy;&nbsp;{{ currentYear }}&nbsp;
-            <span>{{ metaConfig.copyright }}</span>
+            <span v-html="metaConfig.copyright" />
           </div>
           <div class="beian-info">
             <a
