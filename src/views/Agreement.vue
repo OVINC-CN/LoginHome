@@ -28,10 +28,12 @@ const agreement = computed(() => type.value === 'user' ? userAgreement.value: pr
     <h2>
       {{ type === 'user' ? $t('UserAgreement') : $t('PrivacyAgreement') }}
     </h2>
-    <div
-      v-html="agreement"
-      style="text-align: left"
-    />
+    <div style="display: flex; justify-content: center;">
+      <div
+        v-html="agreement"
+        style="text-align: left; max-width: 1600px"
+      />
+    </div>
   </a-space>
 </template>
 
@@ -41,7 +43,7 @@ const agreement = computed(() => type.value === 'user' ? userAgreement.value: pr
   align-items: center;
   justify-content: center;
   width: 100%;
-  padding: 0 20px;
+  padding: 20px;
   box-sizing: border-box;
 }
 
