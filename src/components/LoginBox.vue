@@ -214,9 +214,9 @@ const handleSubmit = async ({values, errors}) => {
     params.tcaptcha = ret;
     signInAPI(params)
         .then(
-            () => {
+            (res) => {
               Message.info(i18n.t('LoginSuccess'));
-              emits('loginRedirect');
+              emits('loginRedirect', res.data.code);
             },
             (err) => {
               Modal.warning({
@@ -261,9 +261,9 @@ const quickLogin = () => {
   handleLoading(loading, true);
   oauthCodeAPI()
       .then(
-          () => {
+          (res) => {
             Message.info(i18n.t('LoginSuccess'));
-            emits('loginRedirect');
+            emits('loginRedirect', res.data.code);
           },
           (err) => {
             Modal.warning({
@@ -326,12 +326,12 @@ const checkWeChatLogin = () => {
   };
   weChatLoginAPI(params).then(
       (res) => {
-        if ('wechat_code' in res.data) {
+        if ('code' in res.data) {
+          emits('loginRedirect', res.data.code);
+        } else if ('wechat_code' in res.data) {
           store.commit('setWeChatCode', res.data.wechat_code);
           useWeChat.value = false;
           handleLoading(loading, false);
-        } else {
-          emits('loginRedirect');
         }
       },
       (err) => {
