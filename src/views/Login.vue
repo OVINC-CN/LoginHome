@@ -53,9 +53,9 @@ const showLogin = ref(true);
 const handleToggle = () => (showLogin.value = !showLogin.value);
 
 // redirect
-const loginRedirect = (code) => {
+const loginRedirect = () => {
   if (next.value) {
-    window.location.href = next.value.indexOf('?') !== -1 ? `${next.value}&code=${code}` : `${next.value}?code=${code}`;
+    window.location.href = next.value;
     return;
   }
   window.location.href = globalContext.siteUrl;

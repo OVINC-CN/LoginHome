@@ -261,9 +261,9 @@ const handleSubmit = async ({values, errors}) => {
     params.tcaptcha = ret;
     signUpAPI(params)
         .then(
-            (res) => {
+            () => {
               Message.success(i18n.t('RegistrySuccess'));
-              emits('loginRedirect', res.data.code);
+              emits('loginRedirect');
             },
             (err) =>
               Modal.warning({
