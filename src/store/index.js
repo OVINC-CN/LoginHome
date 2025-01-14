@@ -38,6 +38,7 @@ const store = createStore({
         gongan_filling_id: '',
         gongan_filling_url: '',
         background_image: '',
+        registry_locked: true,
       },
     };
   },

@@ -19,13 +19,21 @@
     >
       <div style="display: flex">
         <a-button
+          v-if="showLogin && !registryLocked"
           type="text"
           @click="handleToggle"
         >
-          {{ showLogin ? $t('goToRegistry') : $t('backToLogin') }}
+          {{ $t('goToRegistry') }}
         </a-button>
         <a-button
-          v-show="showLogin"
+          v-if="!showLogin"
+          type="text"
+          @click="handleToggle"
+        >
+          {{ $t('backToLogin') }}
+        </a-button>
+        <a-button
+          v-if="showLogin"
           type="text"
           @click="goToReset"
         >
@@ -42,6 +50,11 @@ import {computed, ref} from 'vue';
 import LoginBox from '@/components/LoginBox.vue';
 import RegistryBox from '@/components/RegistryBox.vue';
 import globalContext from '@/context';
+import {useStore} from 'vuex';
+
+// store
+const store = useStore();
+const registryLocked = computed(() => Boolean(store.state.metaConfig.registry_locked));
 
 // route
 const route = useRoute();
