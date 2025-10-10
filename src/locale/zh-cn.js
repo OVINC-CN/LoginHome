@@ -148,6 +148,7 @@ const mZhCN = {
   SpiritAndVision: '使命与愿景',
   ContactUs: '保持联系',
   Contact: '联系',
+  LogoutSuccess: '退出登录成功',
 };
 
 export default mZhCN;

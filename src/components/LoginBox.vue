@@ -120,7 +120,8 @@
         @click="weChatQuickLogin"
         status="success"
       >
-        <icon-wechat style="margin-right: 8px" />{{ $t('WeChatQuickLogin') }}
+        <icon-wechat style="margin-right: 8px" />
+        {{ $t('WeChatQuickLogin') }}
       </a-button>
     </a-space>
     <div
@@ -149,17 +150,29 @@
       >
         {{ $t('LoginAs') }}&nbsp;{{ user.nick_name }}&nbsp;{{ $t('LoginAsEnd') }}
       </a-button>
-      <a-button
-        type="text"
-        @click="
-          useCurrent = !useCurrent;
-          initWeChatLogin();
-        "
-        :loading="loading || weChatLoading"
+      <a-space
+        :size="2"
         style="margin-top: 10px"
       >
-        {{ $t('loginAsAnother') }}
-      </a-button>
+        <a-button
+          type="text"
+          @click="
+            useCurrent = !useCurrent;
+            initWeChatLogin();
+          "
+          :loading="loading || weChatLoading"
+        >
+          {{ $t('loginAsAnother') }}
+        </a-button>
+        <a-button
+          type="text"
+          status="warning"
+          @click="doLogout"
+          :loading="loading || weChatLoading"
+        >
+          {{ $t('logout') }}
+        </a-button>
+      </a-space>
     </a-space>
   </a-space>
 </template>
@@ -167,7 +180,7 @@
 <script setup>
 import {computed, onMounted, ref} from 'vue';
 import {useI18n} from 'vue-i18n';
-import {getUserInfoAPI, getWeChatConfigAPI, oauthCodeAPI, signInAPI, weChatLoginAPI} from '@/api/user';
+import {getUserInfoAPI, getWeChatConfigAPI, oauthCodeAPI, signInAPI, signOutAPI, weChatLoginAPI} from '@/api/user';
 import {Message, Modal} from '@arco-design/web-vue';
 import {handleLoading} from '@/utils/loading';
 import {useStore} from 'vuex';
@@ -292,13 +305,13 @@ const initWeChatLogin = () => {
     if (res.data && res.data.app_id) {
       if (res.data.is_wechat) {
         weChatQuickLoginUrl.value =
-          'https://open.weixin.qq.com/connect/oauth2/authorize' +
-          `?appid=${res.data.app_id}` +
-          `&redirect_uri=${encodeURIComponent(redirectURI)}` +
-          '&response_type=code' +
-          '&scope=snsapi_userinfo' +
-          `&state=${res.data.state}` +
-          '#wechat_redirect';
+            'https://open.weixin.qq.com/connect/oauth2/authorize' +
+            `?appid=${res.data.app_id}` +
+            `&redirect_uri=${encodeURIComponent(redirectURI)}` +
+            '&response_type=code' +
+            '&scope=snsapi_userinfo' +
+            `&state=${res.data.state}` +
+            '#wechat_redirect';
       } else {
         // eslint-disable-next-line no-undef
         new WxLogin({
@@ -336,6 +349,25 @@ const checkWeChatLogin = () => {
       },
       (err) => {
         Message.error(err.response.data.message);
+        handleLoading(loading, false);
+      },
+  );
+};
+
+// logout
+const doLogout = () => {
+  handleLoading(loading, true);
+  signOutAPI().then(
+      () => {
+        Message.info(i18n.t('LogoutSuccess'));
+        useCurrent.value = !useCurrent.value;
+        initWeChatLogin();
+      },
+      (err) => {
+        Message.error(err.response.data.message);
+      },
+  ).finally(
+      () => {
         handleLoading(loading, false);
       },
   );
