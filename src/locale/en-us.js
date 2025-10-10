@@ -148,6 +148,7 @@ const mEnUS = {
   SpiritAndVision: 'Spirit And Vision',
   ContactUs: 'Keep Contact',
   Contact: 'Contact',
+  LogoutSuccess: 'Logout Success',
 };
 
 export default mEnUS;
