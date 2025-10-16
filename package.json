@@ -11,7 +11,8 @@
     "build": "vite build",
     "serve": "vite preview",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "lint:sarif": "eslint . --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif"
   },
   "dependencies": {
     "aegis-web-sdk": "^1.41.5",
