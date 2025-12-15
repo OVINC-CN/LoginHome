@@ -15,6 +15,7 @@ export default defineConfig({
   server: {
     host: process.env.HOST,
     port: 8080,
+    allowedHosts: [(new URL(process.env.SITE_URL)).host],
   },
   resolve: {
     alias: {
