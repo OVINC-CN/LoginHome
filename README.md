@@ -1,119 +1,36 @@
-<div align="center">
-  <img src="public/favicon.png" alt="logo" width="100" height="100" />
-  <h1>LoginHome</h1>
-  <p>Unified Single Sign-On (SSO) Portal and Session Management Center for OVINC Services</p>
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-  <p>
-    <strong>English</strong> | <a href="./README_CN.md">简体中文</a>
-  </p>
+## Getting Started
 
-  <p>
-    <a href="https://vuejs.org/"><img src="https://img.shields.io/badge/vue-3.5.22-brightgreen.svg" alt="Vue"></a>
-    <a href="https://vitejs.dev/"><img src="https://img.shields.io/badge/vite-6.4.0-646cff.svg" alt="Vite"></a>
-    <a href="https://arco.design/"><img src="https://img.shields.io/badge/Arco%20Design-2.57.0-165DFF.svg" alt="Arco Design"></a>
-    <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
-  </p>
-</div>
-
----
-
-## 📖 Introduction
-
-**LoginHome** is the core component of the OVINC ecosystem, providing unified Single Sign-On (SSO) services. It handles user authentication, authorization, and global session management, ensuring a seamless and secure experience for users accessing OVINC internal services and frontend applications.
-
-## ✨ Features
-
-- 🔐 **Single Sign-On (SSO)** - One login, global access, seamless navigation across multiple subsystems.
-- 🛡️ **Session Management** - Centralized user session control and permission verification.
-- 🤝 **Standard Protocol Compatibility** - Compatible with OIDC / OAuth2 protocols, easy to integrate.
-- 🌍 **Internationalization** - Built-in multi-language support (i18n) to serve global users.
-- 🎨 **Modern UI** - Built with Arco Design, providing a beautiful and consistent user interface.
-
-## 🛠️ Tech Stack
-
-- **Core Framework:** [Vue 3](https://vuejs.org/)
-- **Build Tool:** [Vite](https://vitejs.dev/)
-- **UI Library:** [Arco Design Vue](https://arco.design/vue)
-- **State Management:** [Vuex](https://vuex.vuejs.org/)
-- **Router:** [Vue Router](https://router.vuejs.org/)
-- **HTTP Client:** [Axios](https://axios-http.com/)
-- **Monitoring:** Aegis Web SDK
-
-## 🚀 Quick Start
-
-### Prerequisites
-
-- [Node.js](https://nodejs.org/) >= 16
-- [pnpm](https://pnpm.io/) >= 8
-
-### Installation
-
-Clone the repository:
+First, run the development server:
 
 ```bash
-git clone <repository-url>
-cd LoginHome
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
 
-Install dependencies:
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-```bash
-pnpm install
-```
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-### Development
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-Start the local development server:
+## Learn More
 
-```bash
-pnpm run dev
-```
+To learn more about Next.js, take a look at the following resources:
 
-### Build
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-Build for production:
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-```bash
-pnpm run build
-```
+## Deploy on Vercel
 
-### Preview
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Preview the build:
-
-```bash
-pnpm run serve
-```
-
-### Linting
-
-Run ESLint:
-
-```bash
-pnpm run lint
-```
-
-## 📂 Directory Structure
-
-```
-src/
-├── api/          # API encapsulation
-├── components/   # Shared components
-├── context/      # Context management
-├── locale/       # Internationalization resources
-├── router/       # Router configuration
-├── store/        # Vuex state management
-├── styles/       # Global styles
-├── utils/        # Utility functions
-├── views/        # Page views
-├── App.vue       # Root component
-└── main.js       # Entry file
-```
-
-## 🤝 Contribution
-
-Issues and Pull Requests are welcome to improve this project.
-
-## 📄 License
-
-This project is licensed under the [MIT](./LICENSE) License.
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
