@@ -1,119 +1,191 @@
 <div align="center">
-  <img src="public/favicon.png" alt="logo" width="100" height="100" />
-  <h1>LoginHome</h1>
-  <p>Unified Single Sign-On (SSO) Portal and Session Management Center for OVINC Services</p>
-
-  <p>
-    <strong>English</strong> | <a href="./README_CN.md">简体中文</a>
-  </p>
-
-  <p>
-    <a href="https://vuejs.org/"><img src="https://img.shields.io/badge/vue-3.5.22-brightgreen.svg" alt="Vue"></a>
-    <a href="https://vitejs.dev/"><img src="https://img.shields.io/badge/vite-6.4.0-646cff.svg" alt="Vite"></a>
-    <a href="https://arco.design/"><img src="https://img.shields.io/badge/Arco%20Design-2.57.0-165DFF.svg" alt="Arco Design"></a>
-    <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
-  </p>
+  <img src="./public/favicon.png" alt="LoginHome Logo" width="60" height="60">
+  
+  # LoginHome
+  
+  ✨ **A modern, elegant authentication portal built with React + Vite** ✨
+  
+  [English](./README.md) · [简体中文](./README.zh-CN.md)
+  
+  [![License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+  [![React](https://img.shields.io/badge/React-19.2.0-61dafb.svg)](https://reactjs.org/)
+  [![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-3178c6.svg)](https://www.typescriptlang.org/)
+  [![Vite](https://img.shields.io/badge/Vite-7.2.4-646cff.svg)](https://vitejs.dev/)
+  
 </div>
 
 ---
 
 ## 📖 Introduction
 
-**LoginHome** is the core component of the OVINC ecosystem, providing unified Single Sign-On (SSO) services. It handles user authentication, authorization, and global session management, ensuring a seamless and secure experience for users accessing OVINC internal services and frontend applications.
+**LoginHome** is a beautiful, minimalist authentication portal designed with Apple Inc.'s aesthetic philosophy. It provides a comprehensive solution for user authentication, registration, and profile management with full internationalization support.
 
-## ✨ Features
+### ✨ Key Features
 
-- 🔐 **Single Sign-On (SSO)** - One login, global access, seamless navigation across multiple subsystems.
-- 🛡️ **Session Management** - Centralized user session control and permission verification.
-- 🤝 **Standard Protocol Compatibility** - Compatible with OIDC / OAuth2 protocols, easy to integrate.
-- 🌍 **Internationalization** - Built-in multi-language support (i18n) to serve global users.
-- 🎨 **Modern UI** - Built with Arco Design, providing a beautiful and consistent user interface.
-
-## 🛠️ Tech Stack
-
-- **Core Framework:** [Vue 3](https://vuejs.org/)
-- **Build Tool:** [Vite](https://vitejs.dev/)
-- **UI Library:** [Arco Design Vue](https://arco.design/vue)
-- **State Management:** [Vuex](https://vuex.vuejs.org/)
-- **Router:** [Vue Router](https://router.vuejs.org/)
-- **HTTP Client:** [Axios](https://axios-http.com/)
-- **Monitoring:** Aegis Web SDK
+- 🎨 **Minimalist Design** - Clean, elegant UI inspired by Apple's design language
+- 🌍 **Internationalization** - Built-in i18n support for English and Chinese
+- 🎯 **Modern Stack** - React 19, TypeScript, Vite, Tailwind CSS
+- 📱 **Responsive** - Seamless experience across all devices
+- 🔒 **Secure** - Multiple authentication methods including WeChat login
+- 🎭 **Theme Support** - Dark mode ready
+- ♿ **Accessible** - Built with accessibility in mind using Radix UI
+- 🚀 **Fast** - Powered by Vite for lightning-fast development and builds
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) >= 16
-- [pnpm](https://pnpm.io/) >= 8
+- Node.js >= 18
+- Yarn (recommended)
 
 ### Installation
 
-Clone the repository:
-
 ```bash
-git clone <repository-url>
+# Clone the repository
+git clone https://github.com/OVINC/LoginHome.git
 cd LoginHome
+
+# Install dependencies
+yarn install
+
+# Start development server
+yarn dev
 ```
 
-Install dependencies:
+Visit `http://localhost:5173` to see your application.
+
+### Build for Production
 
 ```bash
-pnpm install
+# Build the project
+yarn build
+
+# Preview production build
+yarn preview
 ```
 
-### Development
+## 🛠️ Tech Stack
 
-Start the local development server:
+- **Framework:** React 19.2.0
+- **Build Tool:** Vite 7.2.4
+- **Language:** TypeScript 5.9.3
+- **Styling:** Tailwind CSS 4.1.18
+- **UI Components:** Radix UI, shadcn/ui
+- **Form Management:** React Hook Form + Zod
+- **State Management:** Zustand
+- **Routing:** React Router DOM 7.11.0
+- **HTTP Client:** Axios
+- **Icons:** Lucide React
+- **Linting:** ESLint with Alloy Config
+
+## 📁 Project Structure
+
+```
+LoginHome/
+├── public/              # Static assets
+│   ├── favicon.png      # Application logo
+│   └── config.js        # Runtime configuration
+├── src/
+│   ├── api/             # API service layer
+│   ├── components/      # React components
+│   │   ├── ui/          # Reusable UI components (shadcn)
+│   │   ├── layout/      # Layout components
+│   │   └── *.tsx        # Feature components
+│   ├── contexts/        # React contexts
+│   ├── i18n/            # Internationalization
+│   │   └── locales/     # Language files
+│   ├── pages/           # Page components
+│   ├── store/           # Global state management
+│   ├── styles/          # Global styles
+│   ├── lib/             # Utility functions
+│   ├── App.tsx          # Root component
+│   └── main.tsx         # Entry point
+├── package.json         # Dependencies and scripts
+├── vite.config.ts       # Vite configuration
+├── tsconfig.json        # TypeScript configuration
+├── tailwind.config.js   # Tailwind CSS configuration
+└── eslint.config.mjs    # ESLint configuration
+```
+
+## 🎯 Available Scripts
 
 ```bash
-pnpm run dev
+# Development
+yarn dev              # Start dev server with hot reload
+
+# Build
+yarn build            # Build for production
+
+# Lint
+yarn lint             # Run ESLint
+yarn lint:fix         # Fix ESLint errors automatically
+
+# Preview
+yarn preview          # Preview production build locally
 ```
 
-### Build
+## 🌐 Internationalization
 
-Build for production:
+LoginHome supports multiple languages out of the box. Language files are located in `src/i18n/locales/`:
 
-```bash
-pnpm run build
+- `en.json` - English translations
+- `zh.json` - Chinese translations
+
+To add a new language, create a new JSON file in the locales directory and update the i18n configuration.
+
+## 🎨 Customization
+
+### Theming
+
+The application uses Tailwind CSS for styling. Customize the theme in `tailwind.config.js`:
+
+```javascript
+export default {
+  theme: {
+    extend: {
+      colors: {
+        // Your custom colors
+      },
+    },
+  },
+};
 ```
 
-### Preview
+### Configuration
 
-Preview the build:
+Runtime configuration can be modified in `public/config.js` or through environment variables.
 
-```bash
-pnpm run serve
-```
+## 📝 License
 
-### Linting
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-Run ESLint:
+## 🤝 Contributing
 
-```bash
-pnpm run lint
-```
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-## 📂 Directory Structure
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-```
-src/
-├── api/          # API encapsulation
-├── components/   # Shared components
-├── context/      # Context management
-├── locale/       # Internationalization resources
-├── router/       # Router configuration
-├── store/        # Vuex state management
-├── styles/       # Global styles
-├── utils/        # Utility functions
-├── views/        # Page views
-├── App.vue       # Root component
-└── main.js       # Entry file
-```
+## 💬 Support
 
-## 🤝 Contribution
+If you have any questions or need help, please:
 
-Issues and Pull Requests are welcome to improve this project.
+- Open an [Issue](https://github.com/OVINC/LoginHome/issues)
+- Check existing [Discussions](https://github.com/OVINC/LoginHome/discussions)
 
-## 📄 License
+## 🙏 Acknowledgments
 
-This project is licensed under the [MIT](./LICENSE) License.
+- [React](https://reactjs.org/) - The web framework used
+- [Vite](https://vitejs.dev/) - Build tool
+- [Tailwind CSS](https://tailwindcss.com/) - CSS framework
+- [shadcn/ui](https://ui.shadcn.com/) - UI components
+- [Radix UI](https://www.radix-ui.com/) - Unstyled, accessible components
+
+---
+
+<div align="center">
+  Made with ❤️ by <a href="https://github.com/OVINC">OVINC</a>
+</div>

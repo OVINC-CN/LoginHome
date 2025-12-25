@@ -1,31 +1,17 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-        <link rel="icon" href="/favicon.ico?v=1766063166000">
-        <title>OVINC</title>
-        <style>
-            :root {
-                --vh: 1vh;
-            }
-        </style>
-        <script>
-          !(function (n, e) {
-            function setViewHeight() {
-              const windowVH = e.innerHeight / 100
-              n.documentElement.style.setProperty('--vh', windowVH + 'px')
-            }
-            const i = 'orientationchange' in window ? 'orientationchange' : 'resize'
-            n.addEventListener('DOMContentLoaded', setViewHeight)
-            e.addEventListener(i, setViewHeight)
-          })(document, window)
-        </script>
-        <script src="/extra-assets/js/TJCaptcha.js?v=1766063166000"></script>
-        <script src="/extra-assets/js/wxLogin.js?v=1766063166000"></script>
-    </head>
-    <body>
-        <div id="app"></div>
-        <script type="module" src="/src/main.js?v=1766063166000"></script>
-    </body>
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="OVINC Portal" />
+    <title>OVINC Portal</title>
+    <script src="/config.js"></script>
+    <script src="/extra-assets/js/TJCaptcha.js" defer></script>
+    <script src="/extra-assets/js/wxLogin.js" defer></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
