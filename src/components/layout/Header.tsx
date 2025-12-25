@@ -69,9 +69,9 @@ export function Header() {
           </NavigationMenu>
         </div>
         <div className="flex items-center gap-2">
-          <DropdownMenu>
+          <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon">
+              <Button variant="ghost" size="icon" className="hover:bg-transparent active:bg-transparent">
                 <Globe className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
