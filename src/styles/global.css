@@ -126,9 +126,12 @@
   }
 }
 
-html, body {
-  min-height: 100vh;
+html {
   overflow-x: hidden;
+}
+
+body {
+  min-height: 100vh;
 }
 
 /* Flip card styles */
