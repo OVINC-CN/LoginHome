@@ -87,7 +87,7 @@ export function LoginBox({ onLoginRedirect }: LoginBoxProps) {
               redirect_uri: encodeURIComponent(redirectURI),
               state: res.state || '',
               style: '',
-              href: 'https://www.ovinc.cn/extra-assets/css/wechat_login.css?v=1718266759',
+              href: `${globalContext.siteUrl}/extra-assets/css/wechat_login.css?v=1718266759`,
             });
           }
         }
