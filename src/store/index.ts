@@ -67,9 +67,6 @@ export const useAppStore = create<AppState>((set) => ({
     try {
       const res = await listMetaConfigAPI();
       set({ metaConfig: res });
-      if (res.website_title) {
-        document.title = res.website_title;
-      }
     } catch {
       // ignore error
     }

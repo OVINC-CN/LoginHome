@@ -3,10 +3,13 @@ import { Outlet } from 'react-router-dom';
 import { useAppStore } from '@/store';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import { usePageTitle } from '@/hooks/usePageTitle';
 import { Loader2 } from 'lucide-react';
 
 export function Layout() {
   const { mainLoading, setMainLoading, loadMetaConfig } = useAppStore();
+
+  usePageTitle()
 
   useEffect(() => {
     loadMetaConfig().finally(() => setMainLoading(false));
