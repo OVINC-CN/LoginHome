@@ -63,7 +63,7 @@ export const signInAPI = (data: SignInParams): Promise<SignInResponse> => http.p
 export const signUpAPI = (data: SignUpParams): Promise<SignUpResponse> => http.post('/account/sign_up/', data);
 
 export const sendVerifyCodeAPI = (data: { phone_area: string; phone_number: string; tcaptcha?: object }): Promise<void> =>
-  http.post('/account/phone_verify_code/', data);
+    http.post('/account/phone_verify_code/', data);
 
 export const signOutAPI = (): Promise<void> => http.get('/account/sign_out/');
 
@@ -72,7 +72,7 @@ export const oauthCodeAPI = (): Promise<SignInResponse> => http.get('/account/oa
 export const getWeChatConfigAPI = (): Promise<{ app_id?: string; state?: string; is_wechat?: boolean }> => http.get('/account/wechat_config/');
 
 export const weChatLoginAPI = (data: { code: string; state: string; is_oauth: boolean }): Promise<WeChatLoginResponse> =>
-  http.post('/account/wechat_login/', data);
+    http.post('/account/wechat_login/', data);
 
 export const resetPasswordAPI = (data: ResetPasswordParams): Promise<void> => http.post('/account/reset_password/', data);
 
