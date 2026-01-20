@@ -11,25 +11,25 @@ declare global {
 }
 
 export const checkTCaptcha = async (
-  callback: (ret: { ret: number; ticket?: string; randstr?: string; message?: string }) => void,
-  locale = 'zh-cn'
+    callback: (ret: { ret: number; ticket?: string; randstr?: string; message?: string }) => void,
+    locale = 'zh-cn',
 ) => {
-  try {
-    const captchaConfig = await getTCaptchaConfigAPI();
-    if (captchaConfig.is_enabled) {
-      try {
-        const tCaptchaClient = new window.TencentCaptcha(String(captchaConfig.app_id), callback, {
-          aidEncrypted: captchaConfig.aid_encrypted,
-          userLanguage: locale,
-        });
-        tCaptchaClient.show();
-      } catch (e) {
-        callback({ ret: -1, message: String(e) });
-      }
-    } else {
-      callback({ ret: 0 });
+    try {
+        const captchaConfig = await getTCaptchaConfigAPI();
+        if (captchaConfig.is_enabled) {
+            try {
+                const tCaptchaClient = new window.TencentCaptcha(String(captchaConfig.app_id), callback, {
+                    aidEncrypted: captchaConfig.aid_encrypted,
+                    userLanguage: locale,
+                });
+                tCaptchaClient.show();
+            } catch (e) {
+                callback({ ret: -1, message: String(e) });
+            }
+        } else {
+            callback({ ret: 0 });
+        }
+    } catch {
+        callback({ ret: -1 });
     }
-  } catch {
-    callback({ ret: -1 });
-  }
 };

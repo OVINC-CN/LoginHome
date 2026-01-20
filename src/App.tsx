@@ -9,19 +9,19 @@ import { Agreement } from '@/pages/Agreement';
 import { NotFound } from '@/pages/NotFound';
 
 function App() {
-  return (
-    <Routes>
-      <Route element={<Layout />}>
-        <Route path="/" element={<Home />} />
-        <Route path="/spirit" element={<Spirit />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/agreement/:type" element={<Agreement />} />
-        <Route path="*" element={<NotFound />} />
-      </Route>
-    </Routes>
-  );
+    return (
+        <Routes>
+            <Route element={<Layout />}>
+                <Route path="/" element={<Home />} />
+                <Route path="/spirit" element={<Spirit />} />
+                <Route path="/services" element={<Services />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
+                <Route path="/agreement/:type" element={<Agreement />} />
+                <Route path="*" element={<NotFound />} />
+            </Route>
+        </Routes>
+    );
 }
 
 export default App;
