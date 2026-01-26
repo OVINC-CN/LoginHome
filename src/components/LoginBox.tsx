@@ -232,15 +232,15 @@ export function LoginBox({ onLoginRedirect }: LoginBoxProps) {
                 </CardHeader>
                 <CardContent className="flex flex-col items-center gap-4 p-5">
                     <p className="mb-0 text-sm text-neutral-500 dark:text-neutral-400">{t.WelcomeBack}</p>
-                    <Button onClick={handleQuickLogin} disabled={loading} className="h-10 w-full">
+                    <Button onClick={handleQuickLogin} disabled={loading} className="h-10 w-full cursor-pointer">
                         {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                         <span dangerouslySetInnerHTML={{ __html: `${t.LoginAs}&nbsp;${user.nick_name}&nbsp;${t.LoginAsEnd}` }} />
                     </Button>
                     <div className="flex gap-3 text-sm">
-                        <Button variant="link" size="sm" onClick={handleSwitchAccount} disabled={loading} className="h-auto p-0 text-neutral-500">
+                        <Button variant="link" size="sm" onClick={handleSwitchAccount} disabled={loading} className="h-auto p-0 text-neutral-500 cursor-pointer">
                             {t.loginAsAnother}
                         </Button>
-                        <Button variant="link" size="sm" onClick={handleLogout} disabled={loading} className="h-auto p-0 text-orange-500">
+                        <Button variant="link" size="sm" onClick={handleLogout} disabled={loading} className="h-auto p-0 text-orange-500 cursor-pointer">
                             {t.logout}
                         </Button>
                     </div>
@@ -265,7 +265,7 @@ export function LoginBox({ onLoginRedirect }: LoginBoxProps) {
                             <Loader2 className="h-6 w-6 animate-spin text-green-600" />
                         </div>
                     ) : weChatQuickLoginUrl ? (
-                        <Button onClick={handleWeChatQuickLogin} className="h-10 w-full bg-green-600 hover:bg-green-700">
+                        <Button onClick={handleWeChatQuickLogin} className="h-10 w-full bg-green-600 hover:bg-green-700 cursor-pointer">
                             <MessageCircle className="mr-2 h-4 w-4" />
                             {t.WeChatQuickLogin}
                         </Button>
@@ -275,7 +275,7 @@ export function LoginBox({ onLoginRedirect }: LoginBoxProps) {
 
                     <Separator />
 
-                    <Button variant="link" size="sm" onClick={() => setUseWeChat(false)} className="h-auto p-0 text-neutral-500">
+                    <Button variant="link" size="sm" onClick={() => setUseWeChat(false)} className="h-auto p-0 text-neutral-500 cursor-pointer">
                         {t.UserPassLogin}
                     </Button>
 
@@ -339,11 +339,11 @@ export function LoginBox({ onLoginRedirect }: LoginBoxProps) {
                                 setPassword('');
                             }}
                             disabled={loading || weChatLoading}
-                            className="h-10"
+                            className="h-10 cursor-pointer"
                         >
                             {t.Clear}
                         </Button>
-                        <Button type="submit" disabled={loading || weChatLoading || !readAgreement} className="h-10 flex-1">
+                        <Button type="submit" disabled={loading || weChatLoading || !readAgreement} className="h-10 flex-1 cursor-pointer">
                             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                             {weChatCode ? t.Bind : t.Submit}
                         </Button>
@@ -377,7 +377,7 @@ export function LoginBox({ onLoginRedirect }: LoginBoxProps) {
                         size="sm"
                         onClick={() => setUseWeChat(true)}
                         disabled={loading || weChatLoading}
-                        className="h-auto p-0 text-green-600 hover:text-green-700"
+                        className="h-auto p-0 text-green-600 hover:text-green-700 cursor-pointer"
                     >
                         <MessageCircle className="mr-1.5 h-4 w-4" />
                         {t.WeChatQuickLogin}

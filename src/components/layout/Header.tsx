@@ -71,7 +71,7 @@ export function Header() {
                 <div className="flex items-center gap-2">
                     <DropdownMenu modal={false}>
                         <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="icon" className="hover:bg-transparent active:bg-transparent">
+                            <Button variant="ghost" size="icon" className="hover:bg-transparent active:bg-transparent cursor-pointer">
                                 <Globe className="h-4 w-4" />
                             </Button>
                         </DropdownMenuTrigger>

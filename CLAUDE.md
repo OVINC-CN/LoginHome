@@ -47,3 +47,4 @@ yarn preview      # Preview production build
 - Run `yarn lint` and `yarn build` after code changes
 - Follow Apple Inc.'s minimalist aesthetic style
 - Use `@/` path alias for imports (maps to `src/`)
+- Button elements must use `cursor-pointer` class for proper cursor styling

@@ -36,19 +36,19 @@ function LoginContent() {
             )}
             <div className="flex items-center gap-3 text-sm">
                 {showLogin && !metaConfig.registry_locked && (
-                    <Button variant="link" size="sm" onClick={() => setShowLogin(false)} className="h-auto p-0 text-neutral-500">
+                    <Button variant="link" size="sm" onClick={() => setShowLogin(false)} className="h-auto p-0 text-neutral-500 cursor-pointer">
                         {t.goToRegistry}
                     </Button>
                 )}
                 {!showLogin && (
-                    <Button variant="link" size="sm" onClick={() => setShowLogin(true)} className="h-auto p-0 text-neutral-500">
+                    <Button variant="link" size="sm" onClick={() => setShowLogin(true)} className="h-auto p-0 text-neutral-500 cursor-pointer">
                         {t.backToLogin}
                     </Button>
                 )}
                 {showLogin && (
                     <>
                         {!metaConfig.registry_locked && <span className="text-neutral-300">|</span>}
-                        <Button variant="link" size="sm" asChild className="h-auto p-0 text-neutral-500">
+                        <Button variant="link" size="sm" asChild className="h-auto p-0 text-neutral-500 cursor-pointer">
                             <a href="/reset-password">{t.goToReset}</a>
                         </Button>
                     </>
