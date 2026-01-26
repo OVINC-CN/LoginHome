@@ -274,7 +274,7 @@ export function RegistryBox({ onLoginRedirect }: RegistryBoxProps) {
                                 size="sm"
                                 onClick={handleSendVerifyCode}
                                 disabled={!phoneNumber || waitTime > 0 || sendingCode}
-                                className="h-10 whitespace-nowrap"
+                                className="h-10 whitespace-nowrap cursor-pointer"
                             >
                                 {sendingCode && <Loader2 className="mr-1 h-3 w-3 animate-spin" />}
                                 {waitTime > 0 ? `${waitTime}s` : t.SendVerifyCode}
@@ -296,11 +296,11 @@ export function RegistryBox({ onLoginRedirect }: RegistryBoxProps) {
                                 setPhoneVerify('');
                             }}
                             disabled={loading}
-                            className="h-10"
+                            className="h-10 cursor-pointer"
                         >
                             {t.Clear}
                         </Button>
-                        <Button type="submit" disabled={loading || !readAgreement} className="h-10 flex-1">
+                        <Button type="submit" disabled={loading || !readAgreement} className="h-10 flex-1 cursor-pointer">
                             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                             {weChatCode ? t.Bind : t.Submit}
                         </Button>
