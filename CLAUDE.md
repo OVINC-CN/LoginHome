@@ -5,11 +5,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Build and Development Commands
 
 ```bash
-yarn dev          # Start development server (port 5173)
-yarn build        # Build for production (runs tsc then vite build)
-yarn lint         # Run ESLint
-yarn lint:fix     # Auto-fix ESLint errors
-yarn preview      # Preview production build
+pnpm dev          # Start development server (port 5173)
+pnpm build        # Build for production (runs tsc then vite build)
+pnpm lint         # Run ESLint
+pnpm lint:fix     # Auto-fix ESLint errors
+pnpm preview      # Preview production build
 ```
 
 ## Architecture Overview
@@ -41,10 +41,10 @@ yarn preview      # Preview production build
 
 ## Code Style Requirements
 
-- Use yarn for package management
+- Use pnpm for package management
 - Use eslint-config-alloy rules
 - Never hardcode Chinese or English text - always use i18n translations
-- Run `yarn lint` and `yarn build` after code changes
+- Run `pnpm lint` and `pnpm build` after code changes
 - Follow Apple Inc.'s minimalist aesthetic style
 - Use `@/` path alias for imports (maps to `src/`)
 - Button elements must use `cursor-pointer` class for proper cursor styling
