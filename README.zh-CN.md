@@ -36,7 +36,7 @@
 ### 环境要求
 
 - Node.js >= 18
-- Yarn (推荐)
+- pnpm (推荐)
 
 ### 安装步骤
 
@@ -46,10 +46,10 @@ git clone https://github.com/OVINC/LoginHome.git
 cd LoginHome
 
 # 安装依赖
-yarn install
+pnpm install
 
 # 启动开发服务器
-yarn dev
+pnpm dev
 ```
 
 访问 `http://localhost:5173` 查看应用。
@@ -58,10 +58,10 @@ yarn dev
 
 ```bash
 # 构建项目
-yarn build
+pnpm build
 
 # 预览生产构建
-yarn preview
+pnpm preview
 ```
 
 ## 🛠️ 技术栈
@@ -111,17 +111,17 @@ LoginHome/
 
 ```bash
 # 开发
-yarn dev              # 启动热重载开发服务器
+pnpm dev              # 启动热重载开发服务器
 
 # 构建
-yarn build            # 生产环境构建
+pnpm build            # 生产环境构建
 
 # 代码检查
-yarn lint             # 运行 ESLint
-yarn lint:fix         # 自动修复 ESLint 错误
+pnpm lint             # 运行 ESLint
+pnpm lint:fix         # 自动修复 ESLint 错误
 
 # 预览
-yarn preview          # 本地预览生产构建
+pnpm preview          # 本地预览生产构建
 ```
 
 ## 🌐 国际化

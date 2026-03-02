@@ -36,7 +36,7 @@
 ### Prerequisites
 
 - Node.js >= 18
-- Yarn (recommended)
+- pnpm (recommended)
 
 ### Installation
 
@@ -46,10 +46,10 @@ git clone https://github.com/OVINC/LoginHome.git
 cd LoginHome
 
 # Install dependencies
-yarn install
+pnpm install
 
 # Start development server
-yarn dev
+pnpm dev
 ```
 
 Visit `http://localhost:5173` to see your application.
@@ -58,10 +58,10 @@ Visit `http://localhost:5173` to see your application.
 
 ```bash
 # Build the project
-yarn build
+pnpm build
 
 # Preview production build
-yarn preview
+pnpm preview
 ```
 
 ## 🛠️ Tech Stack
@@ -111,17 +111,17 @@ LoginHome/
 
 ```bash
 # Development
-yarn dev              # Start dev server with hot reload
+pnpm dev              # Start dev server with hot reload
 
 # Build
-yarn build            # Build for production
+pnpm build            # Build for production
 
 # Lint
-yarn lint             # Run ESLint
-yarn lint:fix         # Fix ESLint errors automatically
+pnpm lint             # Run ESLint
+pnpm lint:fix         # Fix ESLint errors automatically
 
 # Preview
-yarn preview          # Preview production build locally
+pnpm preview          # Preview production build locally
 ```
 
 ## 🌐 Internationalization
