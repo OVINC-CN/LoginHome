@@ -1,5 +1,6 @@
+import { useMemo } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Globe } from 'lucide-react';
+import { Globe, Menu } from 'lucide-react';
 import { useAppStore } from '@/store';
 import { useTranslations } from '@/contexts/useTranslations';
 import {
@@ -7,7 +8,6 @@ import {
     NavigationMenuItem,
     NavigationMenuLink,
     NavigationMenuList,
-    navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
 import {
     DropdownMenu,
@@ -16,7 +16,7 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+import { parseEnterpriseConfig } from '@/lib/utils';
 import type { Locale } from '@/i18n';
 
 const langOptions: { name: string; value: Locale }[] = [
@@ -30,11 +30,22 @@ export function Header() {
     const navigate = useNavigate();
     const metaConfig = useAppStore((state) => state.metaConfig);
 
-    const menuItems = [
-        { key: 'Home', target: 'hero', label: t.Home },
-        { key: 'Spirit', target: 'vision', label: t.Spirit },
-        { key: 'Services', target: 'services', label: t.Services },
-    ];
+    const menuItems = useMemo(() => {
+        const hasBrandValues = Object.keys(parseEnterpriseConfig(metaConfig.brand_values || '')).length > 0;
+        const hasServiceScope = Object.keys(parseEnterpriseConfig(metaConfig.service_scope || '')).length > 0;
+        const hasBrandHighlights = Object.keys(parseEnterpriseConfig(metaConfig.brand_highlights || '')).length > 0;
+        const hasContact = Boolean(metaConfig.contact_picture_url || metaConfig.contact_email || metaConfig.contact_phone);
+
+        return [
+            { key: 'Home', target: 'hero', label: t.Home, visible: true },
+            { key: 'Vision', target: 'vision', label: t.SpiritAndVision, visible: Boolean(metaConfig.brand_vision) },
+            { key: 'Values', target: 'values', label: t.BrandValuesTitle, visible: hasBrandValues },
+            { key: 'Services', target: 'services', label: t.ServiceScopeTitle, visible: hasServiceScope },
+            { key: 'Highlights', target: 'highlights', label: t.BrandHighlightsTitle, visible: hasBrandHighlights },
+            { key: 'Apps', target: 'apps', label: t.ApplicationAndServices, visible: true },
+            { key: 'Contact', target: 'contact', label: t.ContactWays, visible: hasContact },
+        ].filter((item) => item.visible);
+    }, [metaConfig, t]);
 
     const handleChangeLang = (lang: Locale) => {
         changeLocale(lang);
@@ -45,7 +56,7 @@ export function Header() {
     };
 
     const handleMenuClick = (target: string) => {
-        const hash = target === 'hero' ? '' : `#${target}`;
+        const hash = `#${target}`;
 
         if (location.pathname !== '/') {
             navigate({ pathname: '/', hash });
@@ -59,18 +70,6 @@ export function Header() {
         window.setTimeout(() => scrollToSection(target), 0);
     };
 
-    const isMenuActive = (target: string) => {
-        if (location.pathname !== '/') {
-            return false;
-        }
-
-        if (target === 'hero') {
-            return !location.hash || location.hash === '#hero';
-        }
-
-        return location.hash === `#${target}`;
-    };
-
     return (
         <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4">
@@ -80,7 +79,7 @@ export function Header() {
                             <img src={metaConfig.logo_url} alt="logo" className="h-6" />
                         </Link>
                     )}
-                    <NavigationMenu>
+                    <NavigationMenu className="hidden lg:flex">
                         <NavigationMenuList>
                             {menuItems.map((item) => (
                                 <NavigationMenuItem key={item.key}>
@@ -88,11 +87,7 @@ export function Header() {
                                         <button
                                             type="button"
                                             onClick={() => handleMenuClick(item.target)}
-                                            className={cn(
-                                                navigationMenuTriggerStyle(),
-                                                'cursor-pointer',
-                                                isMenuActive(item.target) && 'bg-accent text-accent-foreground',
-                                            )}
+                                            className="inline-flex h-8 cursor-pointer items-center rounded-full px-3 text-sm font-medium text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 dark:text-neutral-400 dark:hover:bg-neutral-900 dark:hover:text-neutral-100"
                                         >
                                             {item.label}
                                         </button>
@@ -103,6 +98,24 @@ export function Header() {
                     </NavigationMenu>
                 </div>
                 <div className="flex items-center gap-2">
+                    <DropdownMenu modal={false}>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="icon" className="cursor-pointer lg:hidden" aria-label={t.Navigation}>
+                                <Menu className="h-4 w-4" />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            {menuItems.map((item) => (
+                                <DropdownMenuItem
+                                    key={item.key}
+                                    onClick={() => handleMenuClick(item.target)}
+                                    className="cursor-pointer"
+                                >
+                                    {item.label}
+                                </DropdownMenuItem>
+                            ))}
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                     <DropdownMenu modal={false}>
                         <DropdownMenuTrigger asChild>
                             <Button variant="ghost" size="icon" className="hover:bg-transparent active:bg-transparent cursor-pointer">
