@@ -7,6 +7,9 @@ export interface MetaConfig {
   brand_title: string;
   brand_desc: string;
   brand_vision: string;
+  brand_values: string;
+  service_scope: string;
+  brand_highlights: string;
   user_agreement: string;
   privacy_agreement: string;
   contact_picture_url: string;
