@@ -309,9 +309,9 @@ export function Home() {
                 <div className="mx-auto w-full max-w-[1280px]">
                     <SectionHeader title={t.ApplicationAndServices} description={t.ApplicationAndServicesDesc} />
                     {loadingApps ? (
-                        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                        <div className="flex flex-wrap justify-center gap-6">
                             {[1, 2, 3].map((i) => (
-                                <div key={i} className="rounded-2xl bg-white p-8 shadow-sm dark:bg-neutral-900">
+                                <div key={i} className="w-full rounded-2xl bg-white p-8 shadow-sm dark:bg-neutral-900 sm:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-3rem)/3)]">
                                     <div className="flex items-start gap-4">
                                         <Skeleton className="h-12 w-12 shrink-0 rounded-2xl" />
                                         <div className="flex-1 space-y-2">
@@ -324,9 +324,11 @@ export function Home() {
                             ))}
                         </div>
                     ) : apps.length > 0 ? (
-                        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                        <div className="flex flex-wrap justify-center gap-6">
                             {apps.map((app) => (
-                                <ApplicationDisplay key={app.app_code} app={app} />
+                                <div key={app.app_code} className="w-full sm:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-3rem)/3)]">
+                                    <ApplicationDisplay app={app} />
+                                </div>
                             ))}
                         </div>
                     ) : (
@@ -349,11 +351,12 @@ export function Home() {
                         <p className="mx-auto mb-12 max-w-2xl text-center text-neutral-500 dark:text-neutral-400">
                             {t.ContactUsDesc}
                         </p>
-                        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+                        <div className="flex flex-wrap justify-center gap-8">
                             {metaConfig.contact_picture_url && (
                                 <FlipCard
                                     isFlipped={!!flippedCards['qrcode']}
                                     onFlip={() => toggleFlip('qrcode')}
+                                    className="w-full md:w-[calc((100%-2rem)/2)] lg:w-[calc((100%-4rem)/3)]"
                                     frontContent={
                                         <div className="flex h-full flex-col items-center justify-center rounded-2xl bg-white p-8 shadow-sm transition-shadow hover:shadow-md dark:bg-neutral-800/50">
                                             <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-blue-50 dark:bg-blue-900/30">
@@ -384,6 +387,7 @@ export function Home() {
                                 <FlipCard
                                     isFlipped={!!flippedCards['email']}
                                     onFlip={() => toggleFlip('email')}
+                                    className="w-full md:w-[calc((100%-2rem)/2)] lg:w-[calc((100%-4rem)/3)]"
                                     frontContent={
                                         <div className="flex h-full flex-col items-center justify-center rounded-2xl bg-white p-8 shadow-sm transition-shadow hover:shadow-md dark:bg-neutral-800/50">
                                             <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-50 dark:bg-green-900/30">
@@ -414,6 +418,7 @@ export function Home() {
                                 <FlipCard
                                     isFlipped={!!flippedCards['phone']}
                                     onFlip={() => toggleFlip('phone')}
+                                    className="w-full md:w-[calc((100%-2rem)/2)] lg:w-[calc((100%-4rem)/3)]"
                                     frontContent={
                                         <div className="flex h-full flex-col items-center justify-center rounded-2xl bg-white p-8 shadow-sm transition-shadow hover:shadow-md dark:bg-neutral-800/50">
                                             <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-orange-50 dark:bg-orange-900/30">
