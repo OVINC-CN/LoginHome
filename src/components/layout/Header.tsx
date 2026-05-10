@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Globe } from 'lucide-react';
 import { useAppStore } from '@/store';
 import { useTranslations } from '@/contexts/useTranslations';
@@ -27,16 +27,48 @@ const langOptions: { name: string; value: Locale }[] = [
 export function Header() {
     const { t, changeLocale } = useTranslations();
     const location = useLocation();
+    const navigate = useNavigate();
     const metaConfig = useAppStore((state) => state.metaConfig);
 
     const menuItems = [
-        { key: 'Home', path: '/', label: t.Home },
-        { key: 'Spirit', path: '/spirit', label: t.Spirit },
-        { key: 'Services', path: '/services', label: t.Services },
+        { key: 'Home', target: 'hero', label: t.Home },
+        { key: 'Spirit', target: 'vision', label: t.Spirit },
+        { key: 'Services', target: 'services', label: t.Services },
     ];
 
     const handleChangeLang = (lang: Locale) => {
         changeLocale(lang);
+    };
+
+    const scrollToSection = (target: string) => {
+        document.getElementById(target)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+
+    const handleMenuClick = (target: string) => {
+        const hash = target === 'hero' ? '' : `#${target}`;
+
+        if (location.pathname !== '/') {
+            navigate({ pathname: '/', hash });
+            return;
+        }
+
+        if (location.hash !== hash) {
+            navigate({ pathname: '/', hash });
+        }
+
+        window.setTimeout(() => scrollToSection(target), 0);
+    };
+
+    const isMenuActive = (target: string) => {
+        if (location.pathname !== '/') {
+            return false;
+        }
+
+        if (target === 'hero') {
+            return !location.hash || location.hash === '#hero';
+        }
+
+        return location.hash === `#${target}`;
     };
 
     return (
@@ -53,15 +85,17 @@ export function Header() {
                             {menuItems.map((item) => (
                                 <NavigationMenuItem key={item.key}>
                                     <NavigationMenuLink asChild>
-                                        <Link
-                                            to={item.path}
+                                        <button
+                                            type="button"
+                                            onClick={() => handleMenuClick(item.target)}
                                             className={cn(
                                                 navigationMenuTriggerStyle(),
-                                                location.pathname === item.path && 'bg-accent text-accent-foreground',
+                                                'cursor-pointer',
+                                                isMenuActive(item.target) && 'bg-accent text-accent-foreground',
                                             )}
                                         >
                                             {item.label}
-                                        </Link>
+                                        </button>
                                     </NavigationMenuLink>
                                 </NavigationMenuItem>
                             ))}
