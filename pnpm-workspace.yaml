@@ -1,0 +1,10 @@
+allowBuilds:
+  esbuild: true
+
+overrides:
+  "flatted": "3.4.2"
+  "picomatch": "4.0.4"
+  "brace-expansion@>=1.1.12 <1.1.13": "1.1.13"
+  "brace-expansion@>=5.0.0 <5.0.5": "5.0.5"
+  "postcss": "8.5.10"
+  "esbuild": "0.28.1"
