@@ -11,6 +11,7 @@ export interface SignInParams {
   username: string;
   password: string;
   is_oauth?: boolean;
+  passkey_code?: string;
   wechat_code?: string;
   tcaptcha?: object;
 }
@@ -28,6 +29,7 @@ export interface SignUpParams {
   phone_number: string;
   phone_verify: string;
   is_oauth?: boolean;
+  passkey_code?: string;
   wechat_code?: string;
   tcaptcha?: object;
 }

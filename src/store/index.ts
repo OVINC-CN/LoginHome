@@ -6,11 +6,13 @@ interface AppState {
   mainLoading: boolean;
   isLogin: boolean;
   user: UserInfo;
+  passkeyCode: string;
   weChatCode: string;
   metaConfig: MetaConfig;
   setMainLoading: (loading: boolean) => void;
   setUser: (user: UserInfo) => void;
   setIsLogin: (isLogin: boolean) => void;
+  setPasskeyCode: (code: string) => void;
   setWeChatCode: (code: string) => void;
   setMetaConfig: (config: MetaConfig) => void;
   loadMetaConfig: () => Promise<void>;
@@ -53,6 +55,7 @@ export const useAppStore = create<AppState>((set) => ({
     mainLoading: true,
     isLogin: false,
     user: defaultUser,
+    passkeyCode: '',
     weChatCode: '',
     metaConfig: defaultMetaConfig,
     setMainLoading: (loading) => {
@@ -64,6 +67,7 @@ export const useAppStore = create<AppState>((set) => ({
     },
     setUser: (user) => set({ user }),
     setIsLogin: (isLogin) => set({ isLogin }),
+    setPasskeyCode: (code) => set({ passkeyCode: code }),
     setWeChatCode: (code) => set({ weChatCode: code }),
     setMetaConfig: (config) => set({ metaConfig: config }),
     loadMetaConfig: async () => {

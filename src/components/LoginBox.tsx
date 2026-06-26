@@ -1,6 +1,6 @@
 import { useState, type FormEvent, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { User, Lock, MessageCircle, Loader2 } from 'lucide-react';
+import { User, Lock, MessageCircle, Loader2, Fingerprint } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,8 +10,19 @@ import { Separator } from '@/components/ui/separator';
 import { useAppStore } from '@/store';
 import { useTranslations } from '@/contexts/useTranslations';
 import { signInAPI, oauthCodeAPI, signOutAPI, getWeChatConfigAPI, weChatLoginAPI } from '@/api/user';
+import {
+    getPasskeyLoginOptionsAPI,
+    getPasskeyRegisterOptionsAPI,
+    passkeyLoginAPI,
+    passkeyRegisterPendingAPI,
+} from '@/api/passkey';
 import { getTCaptchaConfigAPI, type TCaptchaConfig } from '@/api/tcaptcha';
 import { hashPassword } from '@/lib/encrypt';
+import {
+    getPasskeyAuthenticationCredential,
+    getPasskeyRegistrationCredential,
+    isPasskeySupported,
+} from '@/lib/passkey';
 import { checkTCaptcha } from '@/lib/tcaptcha';
 import globalContext from '@/context';
 
@@ -34,23 +45,32 @@ interface LoginBoxProps {
   onLoginRedirect: (code: string) => void;
 }
 
+interface WeChatConfig {
+  app_id?: string;
+  state?: string;
+  is_wechat?: boolean;
+}
+
 // eslint-disable-next-line complexity
 export function LoginBox({ onLoginRedirect }: LoginBoxProps) {
     const { t } = useTranslations();
     const [loading, setLoading] = useState(false);
+    const [passkeyLoading, setPasskeyLoading] = useState(false);
     const [weChatLoading, setWeChatLoading] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [readAgreement, setReadAgreement] = useState(false);
     const [error, setError] = useState('');
+    const [passkeyMessage, setPasskeyMessage] = useState('');
     const [useCurrent, setUseCurrent] = useState(false);
     const [useCustom, setUseCustom] = useState(false);
     const [useWeChat, setUseWeChat] = useState(false);
     const [weChatQuickLoginUrl, setWeChatQuickLoginUrl] = useState('');
+    const [weChatConfig, setWeChatConfig] = useState<WeChatConfig | null>(null);
     const [tcaptchaConfig, setTcaptchaConfig] = useState<TCaptchaConfig | null>(null);
     const [weChatConfigLoaded, setWeChatConfigLoaded] = useState(false);
 
-    const { user, metaConfig, weChatCode, setWeChatCode, isLogin } = useAppStore();
+    const { user, metaConfig, passkeyCode, setPasskeyCode, weChatCode, setWeChatCode, isLogin } = useAppStore();
 
     useEffect(() => {
         getTCaptchaConfigAPI()
@@ -58,44 +78,108 @@ export function LoginBox({ onLoginRedirect }: LoginBoxProps) {
             .catch(() => setTcaptchaConfig({ is_enabled: false, app_id: '', aid_encrypted: '' }));
     }, []);
 
-    const initWeChatLogin = useCallback(() => {
-        const url = new URL(window.location.href);
-        const next = url.searchParams.get('next') || '';
-        const redirectURI = `${globalContext.siteUrl}/login/?next=${encodeURIComponent(next)}`;
-
+    useEffect(() => {
         getWeChatConfigAPI()
-            .then((res) => {
+            .then((config) => {
+                setWeChatConfig(config);
                 setWeChatConfigLoaded(true);
-                if (res && res.app_id) {
-                    if (res.is_wechat) {
-                        setWeChatQuickLoginUrl(
-                            'https://open.weixin.qq.com/connect/oauth2/authorize' +
-                `?appid=${res.app_id}` +
-                `&redirect_uri=${encodeURIComponent(redirectURI)}` +
-                '&response_type=code' +
-                '&scope=snsapi_userinfo' +
-                `&state=${res.state}` +
-                '#wechat_redirect',
-                        );
-                    } else {
-                        // eslint-disable-next-line no-new
-                        new window.WxLogin({
-                            self_redirect: false,
-                            id: 'wxlogin',
-                            appid: res.app_id,
-                            scope: 'snsapi_login',
-                            redirect_uri: encodeURIComponent(redirectURI),
-                            state: res.state || '',
-                            style: '',
-                            href: `${globalContext.siteUrl}/extra-assets/css/wechat_login.css?v=1718266759`,
-                        });
-                    }
-                }
             })
             .catch(() => {
                 setWeChatConfigLoaded(true);
             });
     }, []);
+
+    const initWeChatLogin = useCallback(() => {
+        if (!weChatConfig?.app_id) {
+            return;
+        }
+
+        const url = new URL(window.location.href);
+        const next = url.searchParams.get('next') || '';
+        const redirectURI = `${globalContext.siteUrl}/login/?next=${encodeURIComponent(next)}`;
+
+        if (weChatConfig.is_wechat) {
+            setWeChatQuickLoginUrl(
+                'https://open.weixin.qq.com/connect/oauth2/authorize' +
+                `?appid=${weChatConfig.app_id}` +
+                `&redirect_uri=${encodeURIComponent(redirectURI)}` +
+                '&response_type=code' +
+                '&scope=snsapi_userinfo' +
+                `&state=${weChatConfig.state}` +
+                '#wechat_redirect',
+            );
+            return;
+        }
+
+        // eslint-disable-next-line no-new
+        new window.WxLogin({
+            self_redirect: false,
+            id: 'wxlogin',
+            appid: weChatConfig.app_id,
+            scope: 'snsapi_login',
+            redirect_uri: encodeURIComponent(redirectURI),
+            state: weChatConfig.state || '',
+            style: '',
+            href: `${globalContext.siteUrl}/extra-assets/css/wechat_login.css?v=1718266759`,
+        });
+    }, [weChatConfig]);
+
+    const isPasskeyCredentialNotFound = (err: unknown) => {
+        const apiError = err as { message?: string; status?: number };
+
+        return apiError.status === 404 || apiError.message?.includes('Passkey Credential Not Found');
+    };
+
+    const isPasskeyAuthenticationUnavailable = (err: unknown) => {
+        const passkeyError = err as { message?: string; name?: string };
+
+        return passkeyError.name === 'NotAllowedError' || passkeyError.message === 'Passkey Authentication Failed';
+    };
+
+    const getPasskeyErrorMessage = (err: unknown, fallback: string) => {
+        const passkeyError = err as { message?: string; name?: string };
+
+        if (passkeyError.name === 'NotAllowedError') {
+            return t.PasskeyCancelled;
+        }
+        if (passkeyError.message === 'Passkey Authentication Failed') {
+            return t.PasskeyLoginFailed;
+        }
+        if (passkeyError.message === 'Passkey Registration Failed') {
+            return t.PasskeyRegisterFailed;
+        }
+
+        return passkeyError.message || fallback;
+    };
+
+    const getPasskeyName = () => {
+        if (typeof navigator !== 'undefined' && navigator.platform) {
+            return `${navigator.platform} ${t.PasskeyDefaultName}`;
+        }
+
+        return t.PasskeyDefaultName;
+    };
+
+    const createPendingPasskey = async () => {
+        try {
+            const options = await getPasskeyRegisterOptionsAPI({
+                display_name: username || t.PasskeyPendingUser,
+            });
+            const credential = await getPasskeyRegistrationCredential(options.publicKey);
+            const res = await passkeyRegisterPendingAPI({
+                challenge_id: options.challenge_id,
+                credential,
+                name: getPasskeyName(),
+            });
+
+            setPasskeyCode(res.passkey_code);
+            setPasskeyMessage(t.PasskeyBindReady);
+        } catch (err) {
+            setError(getPasskeyErrorMessage(err, t.PasskeyRegisterFailed));
+        } finally {
+            setPasskeyLoading(false);
+        }
+    };
 
     const checkWeChatLogin = useCallback(() => {
         const url = new URL(window.location.href);
@@ -127,7 +211,7 @@ export function LoginBox({ onLoginRedirect }: LoginBoxProps) {
     }, [checkWeChatLogin]);
 
     useEffect(() => {
-        if (useWeChat && !weChatConfigLoaded) {
+        if (useWeChat && weChatConfigLoaded) {
             initWeChatLogin();
         }
     }, [useWeChat, weChatConfigLoaded, initWeChatLogin]);
@@ -140,6 +224,7 @@ export function LoginBox({ onLoginRedirect }: LoginBoxProps) {
         }
         setLoading(true);
         setError('');
+        setPasskeyMessage('');
 
         try {
             const encryptedPassword = await hashPassword(password, username);
@@ -169,12 +254,16 @@ export function LoginBox({ onLoginRedirect }: LoginBoxProps) {
                 password: encryptedPassword,
                 is_oauth: true,
                 tcaptcha: tcaptchaResult,
+                ...(passkeyCode && { passkey_code: passkeyCode }),
                 ...(weChatCode && { wechat_code: weChatCode }),
             };
             if (weChatCode) {
                 setWeChatCode('');
             }
             const res = await signInAPI(params);
+            if (passkeyCode) {
+                setPasskeyCode('');
+            }
             onLoginRedirect(res.code);
         } catch (err) {
             const errorMessage = (err as { message?: string })?.message || t.LoginFailed;
@@ -215,6 +304,43 @@ export function LoginBox({ onLoginRedirect }: LoginBoxProps) {
 
     const handleWeChatQuickLogin = () => {
         window.location.href = weChatQuickLoginUrl;
+    };
+
+    const handlePasskeyLogin = async () => {
+        if (!isPasskeySupported()) {
+            setError(t.PasskeyUnsupported);
+            return;
+        }
+
+        setPasskeyLoading(true);
+        setError('');
+        setPasskeyMessage('');
+
+        try {
+            const options = await getPasskeyLoginOptionsAPI({ is_oauth: true });
+            const credential = await getPasskeyAuthenticationCredential(options.publicKey);
+            const res = await passkeyLoginAPI({
+                challenge_id: options.challenge_id,
+                credential,
+                is_oauth: true,
+            });
+
+            if (res.code) {
+                onLoginRedirect(res.code);
+                return;
+            }
+
+            setError(t.PasskeyLoginFailed);
+            setPasskeyLoading(false);
+        } catch (err) {
+            if (isPasskeyCredentialNotFound(err) || isPasskeyAuthenticationUnavailable(err)) {
+                await createPendingPasskey();
+                return;
+            }
+
+            setError(getPasskeyErrorMessage(err, t.PasskeyLoginFailed));
+            setPasskeyLoading(false);
+        }
     };
 
     if (isLogin && user.username && !useCustom && !useCurrent) {
@@ -305,7 +431,7 @@ export function LoginBox({ onLoginRedirect }: LoginBoxProps) {
                                 id="username"
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
-                                disabled={loading || weChatLoading}
+                                disabled={loading || passkeyLoading || weChatLoading}
                                 className="h-10 pl-9"
                                 placeholder={t.Username}
                             />
@@ -322,12 +448,13 @@ export function LoginBox({ onLoginRedirect }: LoginBoxProps) {
                                 type="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                disabled={loading || weChatLoading}
+                                disabled={loading || passkeyLoading || weChatLoading}
                                 className="h-10 pl-9"
                                 placeholder={t.Password}
                             />
                         </div>
                     </div>
+                    {passkeyMessage && <p className="text-sm text-green-600 dark:text-green-400">{passkeyMessage}</p>}
                     {error && <p className="text-sm text-destructive">{error}</p>}
                     <div className="flex gap-2 pt-1">
                         <Button
@@ -338,14 +465,14 @@ export function LoginBox({ onLoginRedirect }: LoginBoxProps) {
                                 setUsername('');
                                 setPassword('');
                             }}
-                            disabled={loading || weChatLoading}
+                            disabled={loading || passkeyLoading || weChatLoading}
                             className="h-10 cursor-pointer"
                         >
                             {t.Clear}
                         </Button>
-                        <Button type="submit" disabled={loading || weChatLoading || !readAgreement} className="h-10 flex-1 cursor-pointer">
+                        <Button type="submit" disabled={loading || passkeyLoading || weChatLoading || !readAgreement} className="h-10 flex-1 cursor-pointer">
                             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                            {weChatCode ? t.Bind : t.Submit}
+                            {weChatCode || passkeyCode ? t.Bind : t.Submit}
                         </Button>
                     </div>
                 </form>
@@ -371,17 +498,32 @@ export function LoginBox({ onLoginRedirect }: LoginBoxProps) {
 
                 <div className="mt-4 flex flex-col items-center gap-3">
                     <Separator />
-                    <Button
-                        type="button"
-                        variant="link"
-                        size="sm"
-                        onClick={() => setUseWeChat(true)}
-                        disabled={loading || weChatLoading}
-                        className="h-auto p-0 text-green-600 hover:text-green-700 cursor-pointer"
-                    >
-                        <MessageCircle className="mr-1.5 h-4 w-4" />
-                        {t.WeChatQuickLogin}
-                    </Button>
+                    <div className="flex w-full flex-col gap-2 sm:flex-row">
+                        {weChatConfig?.app_id && (
+                            <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={() => setUseWeChat(true)}
+                                disabled={loading || passkeyLoading || weChatLoading}
+                                className="h-10 flex-1 border-green-200 text-green-600 hover:bg-green-50 hover:text-green-700 cursor-pointer dark:border-green-900 dark:hover:bg-green-950"
+                            >
+                                <MessageCircle className="mr-1.5 h-4 w-4" />
+                                {t.WeChatQuickLogin}
+                            </Button>
+                        )}
+                        <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={handlePasskeyLogin}
+                            disabled={loading || passkeyLoading || weChatLoading}
+                            className="h-10 flex-1 cursor-pointer"
+                        >
+                            {passkeyLoading ? <Loader2 className="mr-1.5 h-4 w-4 animate-spin" /> : <Fingerprint className="mr-1.5 h-4 w-4" />}
+                            {passkeyLoading ? t.PasskeyCreating : t.PasskeyLogin}
+                        </Button>
+                    </div>
                 </div>
             </CardContent>
         </Card>

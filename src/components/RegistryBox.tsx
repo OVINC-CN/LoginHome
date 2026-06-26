@@ -35,7 +35,7 @@ export function RegistryBox({ onLoginRedirect }: RegistryBoxProps) {
     const [phoneAreaOptions, setPhoneAreaOptions] = useState<{ value: string; label: string }[]>([]);
     const [tcaptchaConfig, setTcaptchaConfig] = useState<TCaptchaConfig | null>(null);
 
-    const { weChatCode, setWeChatCode, metaConfig } = useAppStore();
+    const { passkeyCode, setPasskeyCode, weChatCode, setWeChatCode, metaConfig } = useAppStore();
 
     useEffect(() => {
         getPhoneAreasAPI().then((res) => {
@@ -131,12 +131,16 @@ export function RegistryBox({ onLoginRedirect }: RegistryBoxProps) {
                 phone_verify: phoneVerify,
                 is_oauth: true,
                 tcaptcha: tcaptchaResult,
+                ...(passkeyCode && { passkey_code: passkeyCode }),
                 ...(weChatCode && { wechat_code: weChatCode }),
             };
             if (weChatCode) {
                 setWeChatCode('');
             }
             const res = await signUpAPI(params);
+            if (passkeyCode) {
+                setPasskeyCode('');
+            }
             onLoginRedirect(res.code);
         } catch (err) {
             const errorMessage = (err as { message?: string })?.message || t.RegistryFailed;
@@ -302,7 +306,7 @@ export function RegistryBox({ onLoginRedirect }: RegistryBoxProps) {
                         </Button>
                         <Button type="submit" disabled={loading || !readAgreement} className="h-10 flex-1 cursor-pointer">
                             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                            {weChatCode ? t.Bind : t.Submit}
+                            {weChatCode || passkeyCode ? t.Bind : t.Submit}
                         </Button>
                     </div>
                 </form>
