@@ -54,9 +54,10 @@ interface WeChatConfig {
 const panelClassName = 'w-full max-w-sm';
 const titleClassName = 'mb-5 text-center text-lg font-medium text-neutral-900 dark:text-neutral-100';
 const inputClassName = 'h-10 rounded-lg border-neutral-200/80 bg-white/40 pl-9 shadow-none placeholder:text-neutral-400 focus-visible:border-neutral-400 focus-visible:ring-neutral-200/70 dark:border-neutral-800 dark:bg-white/[0.03] dark:focus-visible:border-neutral-600 dark:focus-visible:ring-neutral-800';
-const primaryButtonClassName = 'h-10 rounded-lg bg-neutral-900 text-white shadow-none hover:bg-neutral-800 cursor-pointer dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-neutral-200';
+const primaryButtonClassName = 'h-10 rounded-lg border-blue-400 bg-white/30 text-neutral-800 shadow-none hover:border-blue-500 hover:bg-blue-50/60 hover:text-neutral-950 cursor-pointer dark:border-blue-500 dark:bg-white/[0.03] dark:text-neutral-100 dark:hover:border-blue-400 dark:hover:bg-blue-950/20';
 const secondaryButtonClassName = 'h-10 rounded-lg border-neutral-200/80 bg-white/30 text-neutral-600 shadow-none hover:bg-neutral-50 hover:text-neutral-900 cursor-pointer dark:border-neutral-800 dark:bg-white/[0.03] dark:text-neutral-300 dark:hover:bg-neutral-900 dark:hover:text-neutral-100';
 const thirdPartyButtonClassName = 'h-10 min-h-10 min-w-0 flex-1 shrink rounded-lg border-neutral-200/80 bg-white/30 text-neutral-700 shadow-none hover:bg-neutral-50 hover:text-neutral-950 cursor-pointer dark:border-neutral-800 dark:bg-white/[0.03] dark:text-neutral-300 dark:hover:bg-neutral-900 dark:hover:text-neutral-100';
+const accountButtonClassName = `w-full ${primaryButtonClassName}`;
 
 // eslint-disable-next-line complexity
 export function LoginBox({ onLoginRedirect, onGoToRegistry }: LoginBoxProps) {
@@ -362,10 +363,12 @@ export function LoginBox({ onLoginRedirect, onGoToRegistry }: LoginBoxProps) {
                     {t.LoginToOVINC}
                 </h1>
                 <div className="flex flex-col items-center gap-4">
-                    <p className="mb-0 text-sm text-neutral-500 dark:text-neutral-400">{t.WelcomeBack}</p>
-                    <Button onClick={handleQuickLogin} disabled={loading} className={`w-full ${primaryButtonClassName}`}>
-                        {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                        <span dangerouslySetInnerHTML={{ __html: `${t.LoginAs}&nbsp;${user.nick_name}&nbsp;${t.LoginAsEnd}` }} />
+                    <Button variant="outline" onClick={handleQuickLogin} disabled={loading} className={accountButtonClassName}>
+                        {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <User className="h-4 w-4" />}
+                        <span
+                            className="min-w-0 truncate"
+                            dangerouslySetInnerHTML={{ __html: `${t.LoginAs}&nbsp;${user.nick_name}&nbsp;${t.LoginAsEnd}` }}
+                        />
                     </Button>
                     <div className="flex gap-3 text-sm">
                         <Button variant="link" size="sm" onClick={handleSwitchAccount} disabled={loading} className="h-auto p-0 text-neutral-500 cursor-pointer">
@@ -489,7 +492,7 @@ export function LoginBox({ onLoginRedirect, onGoToRegistry }: LoginBoxProps) {
                         >
                             {t.Clear}
                         </Button>
-                        <Button type="submit" disabled={loading || passkeyLoading || weChatLoading || !readAgreement} className={`flex-1 ${primaryButtonClassName}`}>
+                        <Button type="submit" variant="outline" disabled={loading || passkeyLoading || weChatLoading || !readAgreement} className={`flex-1 ${primaryButtonClassName}`}>
                             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                             {weChatCode || passkeyCode ? t.Bind : t.Submit}
                         </Button>
