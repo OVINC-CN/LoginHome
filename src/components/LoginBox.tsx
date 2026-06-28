@@ -506,10 +506,10 @@ export function LoginBox({ onLoginRedirect }: LoginBoxProps) {
                                 size="sm"
                                 onClick={() => setUseWeChat(true)}
                                 disabled={loading || passkeyLoading || weChatLoading}
-                                className="h-10 min-h-10 flex-1 border-green-200 text-green-600 hover:bg-green-50 hover:text-green-700 cursor-pointer dark:border-green-900 dark:hover:bg-green-950"
+                                className="h-10 min-h-10 min-w-0 flex-1 shrink border-green-200 text-green-600 hover:bg-green-50 hover:text-green-700 cursor-pointer dark:border-green-900 dark:hover:bg-green-950"
                             >
-                                <MessageCircle className="mr-1.5 h-4 w-4" />
-                                {t.WeChatQuickLogin}
+                                <MessageCircle className="h-4 w-4" />
+                                <span className="min-w-0 truncate">{t.WeChatQuickLogin}</span>
                             </Button>
                         )}
                         <Button
@@ -518,10 +518,10 @@ export function LoginBox({ onLoginRedirect }: LoginBoxProps) {
                             size="sm"
                             onClick={handlePasskeyLogin}
                             disabled={loading || passkeyLoading || weChatLoading}
-                            className="h-10 min-h-10 flex-1 cursor-pointer"
+                            className="h-10 min-h-10 min-w-0 flex-1 shrink cursor-pointer"
                         >
-                            {passkeyLoading ? <Loader2 className="mr-1.5 h-4 w-4 animate-spin" /> : <Fingerprint className="mr-1.5 h-4 w-4" />}
-                            {passkeyLoading ? t.PasskeyCreating : t.PasskeyLogin}
+                            {passkeyLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Fingerprint className="h-4 w-4" />}
+                            <span className="min-w-0 truncate">{passkeyLoading ? t.PasskeyCreating : t.PasskeyLogin}</span>
                         </Button>
                     </div>
                 </div>
