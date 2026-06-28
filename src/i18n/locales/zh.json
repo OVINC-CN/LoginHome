@@ -21,7 +21,7 @@
   "Submit": "提交",
   "LoginSuccess": "登录成功",
   "LoginFailed": "登录失败",
-  "goToRegistry": "前往注册",
+  "goToRegistry": "注册账号",
   "backToLogin": "返回登录",
   "repeatPassword": "再次填写密码",
   "Password2NotMatch": "两次密码不匹配",
