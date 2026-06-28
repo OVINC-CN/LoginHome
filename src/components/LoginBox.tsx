@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { User, Lock, MessageCircle, Loader2, Fingerprint } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
@@ -43,6 +42,7 @@ declare global {
 
 interface LoginBoxProps {
   onLoginRedirect: (code: string) => void;
+  onGoToRegistry: () => void;
 }
 
 interface WeChatConfig {
@@ -51,8 +51,15 @@ interface WeChatConfig {
   is_wechat?: boolean;
 }
 
+const panelClassName = 'w-full max-w-sm';
+const titleClassName = 'mb-5 text-center text-lg font-medium text-neutral-900 dark:text-neutral-100';
+const inputClassName = 'h-10 rounded-lg border-neutral-200/80 bg-white/40 pl-9 shadow-none placeholder:text-neutral-400 focus-visible:border-neutral-400 focus-visible:ring-neutral-200/70 dark:border-neutral-800 dark:bg-white/[0.03] dark:focus-visible:border-neutral-600 dark:focus-visible:ring-neutral-800';
+const primaryButtonClassName = 'h-10 rounded-lg bg-neutral-900 text-white shadow-none hover:bg-neutral-800 cursor-pointer dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-neutral-200';
+const secondaryButtonClassName = 'h-10 rounded-lg border-neutral-200/80 bg-white/30 text-neutral-600 shadow-none hover:bg-neutral-50 hover:text-neutral-900 cursor-pointer dark:border-neutral-800 dark:bg-white/[0.03] dark:text-neutral-300 dark:hover:bg-neutral-900 dark:hover:text-neutral-100';
+const thirdPartyButtonClassName = 'h-10 min-h-10 min-w-0 flex-1 shrink rounded-lg border-neutral-200/80 bg-white/30 text-neutral-700 shadow-none hover:bg-neutral-50 hover:text-neutral-950 cursor-pointer dark:border-neutral-800 dark:bg-white/[0.03] dark:text-neutral-300 dark:hover:bg-neutral-900 dark:hover:text-neutral-100';
+
 // eslint-disable-next-line complexity
-export function LoginBox({ onLoginRedirect }: LoginBoxProps) {
+export function LoginBox({ onLoginRedirect, onGoToRegistry }: LoginBoxProps) {
     const { t } = useTranslations();
     const [loading, setLoading] = useState(false);
     const [passkeyLoading, setPasskeyLoading] = useState(false);
@@ -349,16 +356,14 @@ export function LoginBox({ onLoginRedirect }: LoginBoxProps) {
 
     if (useCurrent && user.username) {
         return (
-            <Card className="w-full max-w-sm gap-0 border-neutral-200 py-0 shadow-sm dark:border-neutral-800">
-                <CardHeader className="gap-0 border-b border-neutral-100 pb-4 pt-5 dark:border-neutral-800">
-                    <CardTitle className="text-center text-lg font-medium text-neutral-900 dark:text-neutral-100">
-                        <span dangerouslySetInnerHTML={{ __html: metaConfig.brand_name ? `${metaConfig.brand_name}&nbsp;` : '' }} />
-                        {t.LoginToOVINC}
-                    </CardTitle>
-                </CardHeader>
-                <CardContent className="flex flex-col items-center gap-4 p-5">
+            <section className={panelClassName}>
+                <h1 className={titleClassName}>
+                    <span dangerouslySetInnerHTML={{ __html: metaConfig.brand_name ? `${metaConfig.brand_name}&nbsp;` : '' }} />
+                    {t.LoginToOVINC}
+                </h1>
+                <div className="flex flex-col items-center gap-4">
                     <p className="mb-0 text-sm text-neutral-500 dark:text-neutral-400">{t.WelcomeBack}</p>
-                    <Button onClick={handleQuickLogin} disabled={loading} className="h-10 w-full cursor-pointer">
+                    <Button onClick={handleQuickLogin} disabled={loading} className={`w-full ${primaryButtonClassName}`}>
                         {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                         <span dangerouslySetInnerHTML={{ __html: `${t.LoginAs}&nbsp;${user.nick_name}&nbsp;${t.LoginAsEnd}` }} />
                     </Button>
@@ -371,27 +376,25 @@ export function LoginBox({ onLoginRedirect }: LoginBoxProps) {
                         </Button>
                     </div>
                     {error && <p className="text-sm text-destructive">{error}</p>}
-                </CardContent>
-            </Card>
+                </div>
+            </section>
         );
     }
 
     if (useWeChat && !weChatCode) {
         return (
-            <Card className="w-full max-w-sm gap-0 border-neutral-200 py-0 shadow-sm dark:border-neutral-800">
-                <CardHeader className="gap-0 border-b border-neutral-100 pb-4 pt-5 dark:border-neutral-800">
-                    <CardTitle className="text-center text-lg font-medium text-neutral-900 dark:text-neutral-100">
-                        <span dangerouslySetInnerHTML={{ __html: metaConfig.brand_name ? `${metaConfig.brand_name}&nbsp;` : '' }} />
-                        {t.LoginToOVINC}
-                    </CardTitle>
-                </CardHeader>
-                <CardContent className="flex flex-col items-center gap-4 p-5">
+            <section className={panelClassName}>
+                <h1 className={titleClassName}>
+                    <span dangerouslySetInnerHTML={{ __html: metaConfig.brand_name ? `${metaConfig.brand_name}&nbsp;` : '' }} />
+                    {t.LoginToOVINC}
+                </h1>
+                <div className="flex flex-col items-center gap-4">
                     {weChatLoading ? (
                         <div className="flex h-40 items-center justify-center">
                             <Loader2 className="h-6 w-6 animate-spin text-green-600" />
                         </div>
                     ) : weChatQuickLoginUrl ? (
-                        <Button onClick={handleWeChatQuickLogin} className="h-10 w-full bg-green-600 hover:bg-green-700 cursor-pointer">
+                        <Button variant="outline" onClick={handleWeChatQuickLogin} className={`w-full ${thirdPartyButtonClassName}`}>
                             <MessageCircle className="mr-2 h-4 w-4" />
                             {t.WeChatQuickLogin}
                         </Button>
@@ -406,25 +409,36 @@ export function LoginBox({ onLoginRedirect }: LoginBoxProps) {
                     </Button>
 
                     {error && <p className="text-sm text-destructive">{error}</p>}
-                </CardContent>
-            </Card>
+                </div>
+            </section>
         );
     }
 
     return (
-        <Card className="w-full max-w-sm gap-0 border-neutral-200 py-0 shadow-sm dark:border-neutral-800">
-            <CardHeader className="gap-0 border-b border-neutral-100 pb-4 pt-5 dark:border-neutral-800">
-                <CardTitle className="text-center text-lg font-medium text-neutral-900 dark:text-neutral-100">
-                    <span dangerouslySetInnerHTML={{ __html: metaConfig.brand_name ? `${metaConfig.brand_name}&nbsp;` : '' }} />
-                    {t.LoginToOVINC}
-                </CardTitle>
-            </CardHeader>
-            <CardContent className="p-5">
+        <section className={panelClassName}>
+            <h1 className={titleClassName}>
+                <span dangerouslySetInnerHTML={{ __html: metaConfig.brand_name ? `${metaConfig.brand_name}&nbsp;` : '' }} />
+                {t.LoginToOVINC}
+            </h1>
+            <div>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="space-y-1.5">
-                        <Label htmlFor="username" className="text-sm text-neutral-600 dark:text-neutral-400">
-                            {t.Username}
-                        </Label>
+                        <div className="flex items-center justify-between gap-3">
+                            <Label htmlFor="username" className="text-sm text-neutral-600 dark:text-neutral-400">
+                                {t.Username}
+                            </Label>
+                            {!metaConfig.registry_locked && (
+                                <Button
+                                    type="button"
+                                    variant="link"
+                                    size="sm"
+                                    onClick={onGoToRegistry}
+                                    className="h-auto p-0 text-xs font-normal text-neutral-500 hover:text-neutral-900 cursor-pointer dark:text-neutral-400 dark:hover:text-neutral-100"
+                                >
+                                    {t.goToRegistry}
+                                </Button>
+                            )}
+                        </div>
                         <div className="relative">
                             <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" />
                             <Input
@@ -432,15 +446,20 @@ export function LoginBox({ onLoginRedirect }: LoginBoxProps) {
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
                                 disabled={loading || passkeyLoading || weChatLoading}
-                                className="h-10 pl-9"
+                                className={inputClassName}
                                 placeholder={t.Username}
                             />
                         </div>
                     </div>
                     <div className="space-y-1.5">
-                        <Label htmlFor="password" className="text-sm text-neutral-600 dark:text-neutral-400">
-                            {t.Password}
-                        </Label>
+                        <div className="flex items-center justify-between gap-3">
+                            <Label htmlFor="password" className="text-sm text-neutral-600 dark:text-neutral-400">
+                                {t.Password}
+                            </Label>
+                            <Button variant="link" size="sm" asChild className="h-auto p-0 text-xs font-normal text-neutral-500 hover:text-neutral-900 cursor-pointer dark:text-neutral-400 dark:hover:text-neutral-100">
+                                <Link to="/reset-password">{t.goToReset}</Link>
+                            </Button>
+                        </div>
                         <div className="relative">
                             <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" />
                             <Input
@@ -449,7 +468,7 @@ export function LoginBox({ onLoginRedirect }: LoginBoxProps) {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 disabled={loading || passkeyLoading || weChatLoading}
-                                className="h-10 pl-9"
+                                className={inputClassName}
                                 placeholder={t.Password}
                             />
                         </div>
@@ -466,11 +485,11 @@ export function LoginBox({ onLoginRedirect }: LoginBoxProps) {
                                 setPassword('');
                             }}
                             disabled={loading || passkeyLoading || weChatLoading}
-                            className="h-10 cursor-pointer"
+                            className={secondaryButtonClassName}
                         >
                             {t.Clear}
                         </Button>
-                        <Button type="submit" disabled={loading || passkeyLoading || weChatLoading || !readAgreement} className="h-10 flex-1 cursor-pointer">
+                        <Button type="submit" disabled={loading || passkeyLoading || weChatLoading || !readAgreement} className={`flex-1 ${primaryButtonClassName}`}>
                             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                             {weChatCode || passkeyCode ? t.Bind : t.Submit}
                         </Button>
@@ -506,7 +525,7 @@ export function LoginBox({ onLoginRedirect }: LoginBoxProps) {
                                 size="sm"
                                 onClick={() => setUseWeChat(true)}
                                 disabled={loading || passkeyLoading || weChatLoading}
-                                className="h-10 min-h-10 min-w-0 flex-1 shrink border-green-200 text-green-600 hover:bg-green-50 hover:text-green-700 cursor-pointer dark:border-green-900 dark:hover:bg-green-950"
+                                className={thirdPartyButtonClassName}
                             >
                                 <MessageCircle className="h-4 w-4" />
                                 <span className="min-w-0 truncate">{t.WeChatQuickLogin}</span>
@@ -518,14 +537,14 @@ export function LoginBox({ onLoginRedirect }: LoginBoxProps) {
                             size="sm"
                             onClick={handlePasskeyLogin}
                             disabled={loading || passkeyLoading || weChatLoading}
-                            className="h-10 min-h-10 min-w-0 flex-1 shrink cursor-pointer"
+                            className={thirdPartyButtonClassName}
                         >
                             {passkeyLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Fingerprint className="h-4 w-4" />}
                             <span className="min-w-0 truncate">{passkeyLoading ? t.PasskeyCreating : t.PasskeyLogin}</span>
                         </Button>
                     </div>
                 </div>
-            </CardContent>
-        </Card>
+            </div>
+        </section>
     );
 }

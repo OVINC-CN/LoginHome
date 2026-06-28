@@ -21,7 +21,7 @@
   "Submit": "Submit",
   "LoginSuccess": "Login Success",
   "LoginFailed": "Login Failed",
-  "goToRegistry": "Sign Up",
+  "goToRegistry": "Create account",
   "backToLogin": "Sign In",
   "repeatPassword": "Repeat Password",
   "Password2NotMatch": "Password Does not Match",

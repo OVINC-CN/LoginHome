@@ -11,7 +11,7 @@ function LoginContent() {
     const { t } = useTranslations();
     const [searchParams] = useSearchParams();
     const [showLogin, setShowLogin] = useState(true);
-    const { metaConfig, loadUserInfo } = useAppStore();
+    const { loadUserInfo } = useAppStore();
 
     const next = searchParams.get('next');
 
@@ -28,32 +28,19 @@ function LoginContent() {
     };
 
     return (
-        <div className="flex min-h-[calc(100vh-3.5rem)] flex-col items-center justify-center gap-4 p-4">
+        <div className="flex min-h-[calc(100vh-3.5rem)] flex-col items-center justify-center gap-4 px-6 py-10">
             {showLogin ? (
-                <LoginBox onLoginRedirect={handleLoginRedirect} />
+                <LoginBox onLoginRedirect={handleLoginRedirect} onGoToRegistry={() => setShowLogin(false)} />
             ) : (
                 <RegistryBox onLoginRedirect={handleLoginRedirect} />
             )}
-            <div className="flex items-center gap-3 text-sm">
-                {showLogin && !metaConfig.registry_locked && (
-                    <Button variant="link" size="sm" onClick={() => setShowLogin(false)} className="h-auto p-0 text-neutral-500 cursor-pointer">
-                        {t.goToRegistry}
-                    </Button>
-                )}
-                {!showLogin && (
+            {!showLogin && (
+                <div className="flex items-center gap-3 text-sm">
                     <Button variant="link" size="sm" onClick={() => setShowLogin(true)} className="h-auto p-0 text-neutral-500 cursor-pointer">
                         {t.backToLogin}
                     </Button>
-                )}
-                {showLogin && (
-                    <>
-                        {!metaConfig.registry_locked && <span className="text-neutral-300">|</span>}
-                        <Button variant="link" size="sm" asChild className="h-auto p-0 text-neutral-500 cursor-pointer">
-                            <a href="/reset-password">{t.goToReset}</a>
-                        </Button>
-                    </>
-                )}
-            </div>
+                </div>
+            )}
         </div>
     );
 }

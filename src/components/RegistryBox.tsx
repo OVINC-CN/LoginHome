@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { User, Lock, Phone, Shield, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -17,6 +16,13 @@ import { checkTCaptcha } from '@/lib/tcaptcha';
 interface RegistryBoxProps {
   onLoginRedirect: (code: string) => void;
 }
+
+const panelClassName = 'w-full max-w-sm';
+const titleClassName = 'mb-5 text-center text-lg font-medium text-neutral-900 dark:text-neutral-100';
+const inputClassName = 'h-10 rounded-lg border-neutral-200/80 bg-white/40 pl-9 shadow-none placeholder:text-neutral-400 focus-visible:border-neutral-400 focus-visible:ring-neutral-200/70 dark:border-neutral-800 dark:bg-white/[0.03] dark:focus-visible:border-neutral-600 dark:focus-visible:ring-neutral-800';
+const selectTriggerClassName = 'h-10 rounded-lg border-neutral-200/80 bg-white/40 shadow-none focus-visible:border-neutral-400 focus-visible:ring-neutral-200/70 dark:border-neutral-800 dark:bg-white/[0.03] dark:focus-visible:border-neutral-600 dark:focus-visible:ring-neutral-800';
+const primaryButtonClassName = 'h-10 rounded-lg bg-neutral-900 text-white shadow-none hover:bg-neutral-800 cursor-pointer dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-neutral-200';
+const secondaryButtonClassName = 'h-10 rounded-lg border-neutral-200/80 bg-white/30 text-neutral-600 shadow-none hover:bg-neutral-50 hover:text-neutral-900 cursor-pointer dark:border-neutral-800 dark:bg-white/[0.03] dark:text-neutral-300 dark:hover:bg-neutral-900 dark:hover:text-neutral-100';
 
 export function RegistryBox({ onLoginRedirect }: RegistryBoxProps) {
     const { t } = useTranslations();
@@ -150,14 +156,12 @@ export function RegistryBox({ onLoginRedirect }: RegistryBoxProps) {
     };
 
     return (
-        <Card className="w-full max-w-sm gap-0 border-neutral-200 py-0 shadow-sm dark:border-neutral-800">
-            <CardHeader className="gap-0 border-b border-neutral-100 pb-4 pt-5 dark:border-neutral-800">
-                <CardTitle className="text-center text-lg font-medium text-neutral-900 dark:text-neutral-100">
-                    <span dangerouslySetInnerHTML={{ __html: metaConfig.brand_name ? `${metaConfig.brand_name}&nbsp;` : '' }} />
-                    {t.LoginToOVINC}
-                </CardTitle>
-            </CardHeader>
-            <CardContent className="p-5">
+        <section className={panelClassName}>
+            <h1 className={titleClassName}>
+                <span dangerouslySetInnerHTML={{ __html: metaConfig.brand_name ? `${metaConfig.brand_name}&nbsp;` : '' }} />
+                {t.LoginToOVINC}
+            </h1>
+            <div>
                 <form onSubmit={handleSubmit} className="space-y-3">
                     <div className="space-y-1.5">
                         <Label htmlFor="reg-username" className="text-sm text-neutral-600 dark:text-neutral-400">
@@ -170,7 +174,7 @@ export function RegistryBox({ onLoginRedirect }: RegistryBoxProps) {
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
                                 disabled={loading}
-                                className="h-10 pl-9"
+                                className={inputClassName}
                                 placeholder={t.Username}
                             />
                         </div>
@@ -186,7 +190,7 @@ export function RegistryBox({ onLoginRedirect }: RegistryBoxProps) {
                                 value={nickName}
                                 onChange={(e) => setNickName(e.target.value)}
                                 disabled={loading}
-                                className="h-10 pl-9"
+                                className={inputClassName}
                                 placeholder={t.NickName}
                             />
                         </div>
@@ -203,7 +207,7 @@ export function RegistryBox({ onLoginRedirect }: RegistryBoxProps) {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 disabled={loading}
-                                className="h-10 pl-9"
+                                className={inputClassName}
                                 placeholder={t.Password}
                             />
                         </div>
@@ -220,7 +224,7 @@ export function RegistryBox({ onLoginRedirect }: RegistryBoxProps) {
                                 value={password2}
                                 onChange={(e) => setPassword2(e.target.value)}
                                 disabled={loading}
-                                className="h-10 pl-9"
+                                className={inputClassName}
                                 placeholder={t.repeatPassword}
                             />
                         </div>
@@ -228,7 +232,7 @@ export function RegistryBox({ onLoginRedirect }: RegistryBoxProps) {
                     <div className="space-y-1.5">
                         <Label className="text-sm text-neutral-600 dark:text-neutral-400">{t.PhoneArea}</Label>
                         <Select value={phoneArea} onValueChange={setPhoneArea} disabled={loading}>
-                            <SelectTrigger className="h-10">
+                            <SelectTrigger className={selectTriggerClassName}>
                                 <SelectValue placeholder={t.PhoneArea} />
                             </SelectTrigger>
                             <SelectContent>
@@ -251,7 +255,7 @@ export function RegistryBox({ onLoginRedirect }: RegistryBoxProps) {
                                 value={phoneNumber}
                                 onChange={(e) => setPhoneNumber(e.target.value)}
                                 disabled={loading}
-                                className="h-10 pl-9"
+                                className={inputClassName}
                                 placeholder={t.PhoneNumber}
                             />
                         </div>
@@ -268,7 +272,7 @@ export function RegistryBox({ onLoginRedirect }: RegistryBoxProps) {
                                     value={phoneVerify}
                                     onChange={(e) => setPhoneVerify(e.target.value)}
                                     disabled={loading || !phoneNumber}
-                                    className="h-10 pl-9"
+                                    className={inputClassName}
                                     placeholder={t.PhoneVerifyCode}
                                 />
                             </div>
@@ -278,7 +282,7 @@ export function RegistryBox({ onLoginRedirect }: RegistryBoxProps) {
                                 size="sm"
                                 onClick={handleSendVerifyCode}
                                 disabled={!phoneNumber || waitTime > 0 || sendingCode}
-                                className="h-10 whitespace-nowrap cursor-pointer"
+                                className={`whitespace-nowrap ${secondaryButtonClassName}`}
                             >
                                 {sendingCode && <Loader2 className="mr-1 h-3 w-3 animate-spin" />}
                                 {waitTime > 0 ? `${waitTime}s` : t.SendVerifyCode}
@@ -300,11 +304,11 @@ export function RegistryBox({ onLoginRedirect }: RegistryBoxProps) {
                                 setPhoneVerify('');
                             }}
                             disabled={loading}
-                            className="h-10 cursor-pointer"
+                            className={secondaryButtonClassName}
                         >
                             {t.Clear}
                         </Button>
-                        <Button type="submit" disabled={loading || !readAgreement} className="h-10 flex-1 cursor-pointer">
+                        <Button type="submit" disabled={loading || !readAgreement} className={`flex-1 ${primaryButtonClassName}`}>
                             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                             {weChatCode || passkeyCode ? t.Bind : t.Submit}
                         </Button>
@@ -328,7 +332,7 @@ export function RegistryBox({ onLoginRedirect }: RegistryBoxProps) {
                         </Link>
                     </label>
                 </div>
-            </CardContent>
-        </Card>
+            </div>
+        </section>
     );
 }
