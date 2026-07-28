@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 import { Layers, Mail, Phone, RotateCcw } from 'lucide-react';
 import { listAllAppAPI, type App } from '@/api/app';
 import { ApplicationDisplay } from '@/components/ApplicationDisplay';

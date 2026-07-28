@@ -1,5 +1,5 @@
 import { useState, useEffect, Suspense } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import { LoginBox } from '@/components/LoginBox';
 import { RegistryBox } from '@/components/RegistryBox';
 import { Button } from '@/components/ui/button';

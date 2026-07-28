@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router';
 import { Globe, Menu } from 'lucide-react';
 import { useAppStore } from '@/store';
 import { useTranslations } from '@/contexts/useTranslations';

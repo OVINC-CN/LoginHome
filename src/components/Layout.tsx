@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router';
 import { useAppStore } from '@/store';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
