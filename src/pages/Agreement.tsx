@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { useAppStore } from '@/store';
 import { useTranslations } from '@/contexts/useTranslations';
 import Markdown from 'react-markdown';
